@@ -1,0 +1,11 @@
+.Icon {
+  &--logo {
+    width: 1.75rem;
+    height: auto;
+
+    &-size-large {
+      width: 6rem;
+      height: auto;
+    }
+  }
+}

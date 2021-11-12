@@ -4,24 +4,24 @@ const rem = (px) => `${px / 16}rem`;
 module.exports = {
   purge: {
     content: [
-      './src/components/**/*.{js,ts,jsx,tsx}',
-      './src/pages/**/*.{js,ts,jsx,tsx}',
+      "./src/components/**/*.{js,ts,jsx,tsx}",
+      "./src/pages/**/*.{js,ts,jsx,tsx}",
     ],
   },
   darkMode: false,
   theme: {
     screens: {
-      xxs: '375px',
-      xs: '600px',
-      sm: '768px',
-      md: '900px',
-      lg: '1024px',
-      'lg-xl': '1200px',
-      xl: '1440px',
-      xxl: '2600px',
+      xxs: "375px",
+      xs: "600px",
+      sm: "768px",
+      md: "900px",
+      lg: "1024px",
+      xl: "1200px",
+      xxl: "1440px",
+      xxxl: "2600px",
     },
     fontFamily: {
-      'sans-serif': ['WorkSans', 'sans-serif'],
+      "sans-serif": ["WorkSans", "sans-serif"],
     },
     fontSize: {
       sm: rem(14),
@@ -30,30 +30,30 @@ module.exports = {
       lg: rem(24),
       xl: rem(32),
       xxl: rem(36),
-      xxxl: rem(48)
+      xxxl: rem(48),
     },
     colors: {
-      transparent: 'transparent',
-      white: '#fff',
-      black: '#000',
+      transparent: "transparent",
+      white: "#fff",
+      black: "#000",
+      grey: "#c4c4c4",
       blue: {
-        DEFAULT: '#509ED9',
-        light: '#E3F2FC',
-        dark: '#265980'
+        DEFAULT: "#509ED9",
+        light: "#E3F2FC",
+        dark: "#265980",
       },
       red: {
-        DEFAULT: '#E88565',
-        light: '#FCE9E3',
-        dark: '#803C26'
+        DEFAULT: "#E88565",
+        light: "#FCE9E3",
+        dark: "#803C26",
       },
       green: {
-        DEFAULT: '#3DCACC',
-        light: '#E3FCFC',
-        dark: '#055A5B'
-      }
+        DEFAULT: "#3DCACC",
+        light: "#E3FCFC",
+        dark: "#055A5B",
+      },
     },
-    extend: {
-    },
+    extend: {},
   },
   variants: {
     extend: {},
