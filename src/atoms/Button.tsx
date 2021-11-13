@@ -6,6 +6,7 @@ interface ButtonProps {
   isLink: boolean;
   isInternal: boolean;
   onClick?: () => void;
+  disabled?: boolean;
   link?: string;
   size: "sm" | "md" | "lg";
   type: "border-primary" | "border-secondary" | "outline" | "blank";
@@ -19,6 +20,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
     isLink,
     isInternal,
     onClick,
+    disabled,
     link,
     size,
     type,
@@ -26,12 +28,13 @@ export const Button: React.FC<ButtonProps> = (props) => {
   } = props;
 
   const standardStyle = `
-    font-sans-serif text-sans-serif-md rounded 
+    font-sans-serif text-sans-serif-md rounded w-fit-content h-fit-content
     ${type === "border-primary" ? "bg-blue text-white px-4 py-2" : ""}
     ${type === "border-secondary" ? "bg-grey text-black px-4 py-2" : ""}
     ${type === "outline" ? "border-2 border-black px-4 py-2" : ""}
     ${type === "blank" ? "p-0 color-black" : ""}
     ${className}
+    ${disabled ? "cursor-not-allowed bg-opacity-40" : ""}
   `;
 
   // internal link using Next Link component
@@ -55,7 +58,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
   // button with an onClick event handler
   else {
     return (
-      <button onClick={onClick} className={standardStyle}>
+      <button onClick={onClick} className={standardStyle} disabled={disabled}>
         {text}
       </button>
     );

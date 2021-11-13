@@ -36,7 +36,10 @@ module.exports = {
       transparent: "transparent",
       white: "#fff",
       black: "#000",
-      grey: "#c4c4c4",
+      grey: {
+        DEFAULT: "#c4c4c4",
+        light: "#f1f1f1",
+      },
       blue: {
         DEFAULT: "#509ED9",
         light: "#E3F2FC",
@@ -53,7 +56,14 @@ module.exports = {
         dark: "#055A5B",
       },
     },
-    extend: {},
+    extend: {
+      width: {
+        "fit-content": "fit-content",
+      },
+      height: {
+        "fit-content": "fit-content",
+      },
+    },
   },
   variants: {
     extend: {},
