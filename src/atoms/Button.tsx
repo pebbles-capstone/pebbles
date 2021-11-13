@@ -9,7 +9,8 @@ interface ButtonProps {
   disabled?: boolean;
   link?: string;
   size: "sm" | "md" | "lg";
-  type: "border-primary" | "border-secondary" | "outline" | "blank";
+  style: "border-primary" | "border-secondary" | "outline" | "blank";
+  type?: "submit";
   className?: string;
 }
 
@@ -24,15 +25,16 @@ export const Button: React.FC<ButtonProps> = (props) => {
     link,
     size,
     type,
+    style,
     className,
   } = props;
 
   const standardStyle = `
     font-sans-serif text-sans-serif-md rounded w-fit-content h-fit-content
-    ${type === "border-primary" ? "bg-blue text-white px-4 py-2" : ""}
-    ${type === "border-secondary" ? "bg-grey text-black px-4 py-2" : ""}
-    ${type === "outline" ? "border-2 border-black px-4 py-2" : ""}
-    ${type === "blank" ? "p-0 color-black" : ""}
+    ${style === "border-primary" ? "bg-blue text-white px-4 py-2" : ""}
+    ${style === "border-secondary" ? "bg-grey text-black px-4 py-2" : ""}
+    ${style === "outline" ? "border-2 border-black px-4 py-2" : ""}
+    ${style === "blank" ? "p-0 color-black" : ""}
     ${className}
     ${disabled ? "cursor-not-allowed bg-opacity-40" : ""}
   `;
@@ -58,7 +60,12 @@ export const Button: React.FC<ButtonProps> = (props) => {
   // button with an onClick event handler
   else {
     return (
-      <button onClick={onClick} className={standardStyle} disabled={disabled}>
+      <button
+        onClick={onClick}
+        className={standardStyle}
+        disabled={disabled}
+        type={type}
+      >
         {text}
       </button>
     );

@@ -3,6 +3,10 @@
 
   &__children-wrapper {
     height: calc(100% - 36px);
+
+    @media (max-height: 700px) {
+      height: fit-content;
+    }
   }
 
   &__right-wrapper {

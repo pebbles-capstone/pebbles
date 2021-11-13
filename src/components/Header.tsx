@@ -16,7 +16,7 @@ export const Header: React.FC<HeaderProps> = (props) => {
         </Link>
         <div>
           <Button
-            type="blank"
+            style="blank"
             size="sm"
             isLink={true}
             isInternal={true}
@@ -26,7 +26,7 @@ export const Header: React.FC<HeaderProps> = (props) => {
             className="mr-6"
           />
           <Button
-            type="border-primary"
+            style="border-primary"
             size="sm"
             isLink={true}
             isInternal={true}

@@ -53,7 +53,7 @@ const Styleguide: NextPage = () => {
 
       <div className="flex mt-16">
         <Button
-          type="border-primary"
+          style="border-primary"
           size="sm"
           isLink={false}
           isInternal={false}
@@ -62,7 +62,7 @@ const Styleguide: NextPage = () => {
           ariaLabel="Sign up"
         />
         <Button
-          type="border-secondary"
+          style="border-secondary"
           size="sm"
           isLink={true}
           isInternal={true}
@@ -71,7 +71,7 @@ const Styleguide: NextPage = () => {
           ariaLabel="Go to Home"
         />
         <Button
-          type="outline"
+          style="outline"
           size="sm"
           isLink={true}
           isInternal={false}
@@ -80,7 +80,7 @@ const Styleguide: NextPage = () => {
           ariaLabel="View Udit"
         />
         <Button
-          type="blank"
+          style="blank"
           size="sm"
           isLink={false}
           isInternal={false}

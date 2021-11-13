@@ -68,7 +68,8 @@ const SignIn: NextPage = () => {
                 ariaLabel="Sign in"
                 isLink={false}
                 isInternal={false}
-                type="border-primary"
+                style="border-primary"
+                type="primary"
                 disabled={values.email === "" || values.password === ""}
               />
             </form>

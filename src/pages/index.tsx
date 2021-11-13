@@ -82,7 +82,7 @@ const Home: NextPage = () => {
             Start finding projects and teammates today!
           </p>
           <Button
-            type="border-primary"
+            style="border-primary"
             size="sm"
             isLink={true}
             isInternal={true}
