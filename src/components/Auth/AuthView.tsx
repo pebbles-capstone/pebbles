@@ -1,5 +1,4 @@
 import { Icon } from "../../atoms/Icon";
-import Link from "next/link";
 import { LogoText } from "../LogoText";
 
 interface AuthViewProps {

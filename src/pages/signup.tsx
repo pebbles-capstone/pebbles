@@ -1,10 +1,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import type { NextPage } from "next";
-import { AuthView } from "../components/Auth/AuthView";
-import { SignUpStep1 } from "../components/Auth/SignUpStep1";
-import { SignUpStep2 } from "../components/Auth/SignUpStep2";
-import { SignUpStep3 } from "../components/Auth/SignUpStep3";
+import { AuthView } from "../components/auth/AuthView";
+import { SignUpStep1 } from "../components/auth/SignUpStep1";
+import { SignUpStep2 } from "../components/auth/SignUpStep2";
+import { SignUpStep3 } from "../components/auth/SignUpStep3";
 
 const stepNames: { [key: number]: string } = {
   0: "General information",
