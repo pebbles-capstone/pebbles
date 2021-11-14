@@ -4,18 +4,18 @@ import { Icons, IconType } from "./Icons";
 type Variation = "active" | "hover" | "default";
 type Size = "small" | "medium" | "large" | "default";
 
-type Props = {
+interface IconProps {
   icon: IconType;
   size?: Size;
   variation?: Variation;
   className?: string;
-};
+}
 
 const getIconMarkup = (icon: IconType): React.ReactNode => {
   return React.createElement(Icons[icon]);
 };
 
-export const Icon: FC<Props> = ({
+export const Icon: FC<IconProps> = ({
   icon,
   size = "default",
   variation,
