@@ -10,9 +10,7 @@ a {
 }
 
 * {
-  box-sizing: border-box;
-}
-
-* {
   @apply font-sans-serif;
+  box-sizing: border-box;
+  @apply focus:outline-black;
 }

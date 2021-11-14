@@ -4,12 +4,37 @@ import { TextInput } from "../../atoms/TextInput";
 
 interface SignUpStep1Props {
   next: () => void;
+  email: string;
+  name: string;
+  password: string;
+  confirmPassword: string;
+  setSavedEmail: (arg0: string) => void;
+  setSavedName: (arg0: string) => void;
+  setSavedPassword: (arg0: string) => void;
+  setSavedConfirmPassword: (arg0: string) => void;
 }
 
-export const SignUpStep1: React.FC<SignUpStep1Props> = ({ next }) => {
+export const SignUpStep1: React.FC<SignUpStep1Props> = (props) => {
+  const {
+    next,
+    email,
+    name,
+    password,
+    confirmPassword,
+    setSavedEmail,
+    setSavedName,
+    setSavedPassword,
+    setSavedConfirmPassword,
+  } = props;
+
   return (
     <Formik
-      initialValues={{ email: "", name: "", password: "", confirmPassword: "" }}
+      initialValues={{
+        email: email,
+        name: name,
+        password: password,
+        confirmPassword: confirmPassword,
+      }}
       validateOnChange={false}
       validate={(values) => {
         const errors: { [key: string]: string } = {};
@@ -42,6 +67,11 @@ export const SignUpStep1: React.FC<SignUpStep1Props> = ({ next }) => {
           setErrors(newErrors);
           return;
         }
+
+        setSavedEmail(values.email);
+        setSavedName(values.name);
+        setSavedPassword(values.password);
+        setSavedConfirmPassword(values.confirmPassword);
 
         console.log(values);
         next();

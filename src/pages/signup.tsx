@@ -12,6 +12,8 @@ const stepNames: { [key: number]: string } = {
   2: "Interests",
 };
 
+export type Discipline = "Computer" | "Electrical";
+
 const SignUp: NextPage = () => {
   // Step state controls which part of signup user sees
   // step 0 => general info
@@ -27,6 +29,27 @@ const SignUp: NextPage = () => {
     if (step !== 0) setStep((prev) => prev - 1);
   };
 
+  // signup values so far
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [discipline, setDiscipline] = useState<Discipline | "">("");
+  const [areas, setAreas] = useState<string[]>([]);
+  const [interests, setInterests] = useState<string[]>([]);
+
+  // signup value handlers
+  const setSavedEmail = (email: string) => setEmail(email);
+  const setSavedName = (name: string) => setName(name);
+  const setSavedPassword = (password: string) => setPassword(password);
+  const setSavedConfirmPassword = (confirmPassword: string) =>
+    setConfirmPassword(confirmPassword);
+  const setSavedDiscipline = (discipline: Discipline | "") =>
+    setDiscipline(discipline);
+  const setSavedAreas = (areas: string[]) => setAreas((prev) => [...areas]);
+  const setSavedInterests = (interests: string[]) =>
+    setInterests((prev) => [...interests]);
+
   return (
     <AuthView>
       <div className="w-full flex flex-col">
@@ -34,9 +57,43 @@ const SignUp: NextPage = () => {
         <h2 className="text-md font-medium mb-8">
           Step {step + 1} of 3: {stepNames[step]}
         </h2>
-        {step === 0 ? <SignUpStep1 next={nextStep} /> : null}
-        {step === 1 ? <SignUpStep2 next={nextStep} prev={prevStep} /> : null}
-        {step === 2 ? <SignUpStep3 next={nextStep} prev={prevStep} /> : null}
+        {step === 0 ? (
+          <SignUpStep1
+            next={nextStep}
+            email={email}
+            name={name}
+            password={password}
+            confirmPassword={confirmPassword}
+            setSavedEmail={setSavedEmail}
+            setSavedName={setSavedName}
+            setSavedPassword={setSavedPassword}
+            setSavedConfirmPassword={setSavedConfirmPassword}
+          />
+        ) : null}
+        {step === 1 ? (
+          <SignUpStep2
+            next={nextStep}
+            prev={prevStep}
+            discipline={discipline}
+            areas={areas}
+            setSavedDiscipline={setSavedDiscipline}
+            setSavedAreas={setSavedAreas}
+          />
+        ) : null}
+        {step === 2 ? (
+          <SignUpStep3
+            next={nextStep}
+            prev={prevStep}
+            email={email}
+            name={name}
+            password={password}
+            confirmPassword={confirmPassword}
+            discipline={discipline}
+            areas={areas}
+            interests={interests}
+            setSavedInterests={setSavedInterests}
+          />
+        ) : null}
         <p className="mt-8">
           Already have an account?{" "}
           <Link href="/signin">
