@@ -15,6 +15,20 @@ const Logo: FC = () => (
   </svg>
 );
 
+const Menu: FC = () => (
+  <svg
+    width="100%"
+    viewBox="0 0 72 52"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <rect width="72" height="12" rx="4" fill="#055A5B" />
+    <rect y="40" width="72" height="12" rx="4" fill="#055A5B" />
+    <rect y="20" width="72" height="12" rx="4" fill="#055A5B" />
+  </svg>
+);
+
 export const Icons = {
   logo: Logo,
+  menu: Menu,
 };

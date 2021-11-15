@@ -2,11 +2,11 @@ import React, { FC } from "react";
 import { Icons, IconType } from "./Icons";
 
 type Variation = "active" | "hover" | "default";
-type Size = "small" | "medium" | "large" | "default";
+export type IconSize = "small" | "medium" | "large" | "default";
 
 interface IconProps {
   icon: IconType;
-  size?: Size;
+  size?: IconSize;
   variation?: Variation;
   className?: string;
 }

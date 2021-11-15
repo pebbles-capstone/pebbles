@@ -2,4 +2,8 @@
   grid-template-columns: 100%;
   grid-template-rows: fit-content(3rem) 1fr fit-content(5rem);
   grid-gap: 2rem;
+
+  &--closed {
+    grid-template-rows: fit-content(3rem);
+  }
 }

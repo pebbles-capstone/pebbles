@@ -30,13 +30,13 @@ export const Button: React.FC<ButtonProps> = (props) => {
   } = props;
 
   const standardStyle = `
-    font-sans-serif text-sans-serif-md rounded w-fit-content h-fit-content
+    font-sans-serif text-sans-serif-md rounded w-fit-content h-fit-content transition
     ${style === "border-primary" ? "bg-blue text-white px-4 py-2" : ""}
     ${style === "border-secondary" ? "bg-grey text-black px-4 py-2" : ""}
     ${style === "outline" ? "border-2 border-black px-4 py-2" : ""}
     ${style === "blank" ? "p-0 color-black" : ""}
     ${className}
-    ${disabled ? "cursor-not-allowed bg-opacity-40" : ""}
+    ${disabled ? "cursor-not-allowed bg-opacity-40" : "hover:bg-opacity-90"}
   `;
 
   // internal link using Next Link component

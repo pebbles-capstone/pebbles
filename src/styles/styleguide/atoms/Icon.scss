@@ -15,4 +15,21 @@
       width: 1.25rem;
     }
   }
+
+  &--menu {
+    width: 1.75rem;
+    height: auto;
+
+    &-size-large {
+      width: 6rem;
+    }
+
+    &-size-medium {
+      width: 4rem;
+    }
+
+    &-size-small {
+      width: 1.25rem;
+    }
+  }
 }

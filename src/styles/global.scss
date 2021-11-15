@@ -13,4 +13,5 @@ a {
   @apply font-sans-serif;
   box-sizing: border-box;
   @apply focus:outline-black;
+  @apply transition;
 }
