@@ -14,7 +14,7 @@ interface AuthPage {
 
 const AppHome: NextPage<AuthPage> = ({ user }) => {
   return (
-    <AppView name={user.name}>
+    <AppView name={user.name} width="standard">
       <PageTitle title="Good morning Udit, check out your progress below." />
       <ContentBox
         title="Start rating past projects"

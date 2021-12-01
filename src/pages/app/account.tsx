@@ -12,7 +12,7 @@ interface AuthPage {
 
 const AppAccount: NextPage<AuthPage> = ({ user }) => {
   return (
-    <AppView name={user.name}>
+    <AppView name={user.name} width="standard">
       <div>
         <h1>Account</h1>
         <p>Users can edit their general information and interests</p>

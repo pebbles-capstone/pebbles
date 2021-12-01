@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import { AppView } from "../../components/app/AppView";
 import { ContentBox } from "../../components/app/ContentBox";
 import { PageTitle } from "../../components/app/PageTitle";
-import { ProjectPanel } from "../../components/app/ProjectPanel";
+import { TablePanel } from "../../components/app/TablePanel";
 import { PastProject } from "../../types";
 
 interface MockUser {
@@ -32,22 +32,28 @@ const CurrentProjects: NextPage<AuthPage> = ({ user }) => {
   };
 
   return (
-    <AppView name={user.name}>
-      <PageTitle title="Like/dislike a project so we can understand what you’re interested in and match you with others!" />
-      <ProjectPanel project={mockProject} like={like} dislike={dislike} />
-      <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-8">
-        <ContentBox title="Project Rating Progress">
-          <div className="flex flex-col">
-            <p>You've rated</p>
-            <p className="text-xxxl">18/100</p>
-            <p>past projects so far,</p>
-            <p className="mt-4">
-              We reccomend rating atleast 20 past projects to get accurate
-              teammate suggestions. However, the more you can do, the better!
-            </p>
-          </div>
-        </ContentBox>
-      </div>
+    <AppView name={user.name} width="wide">
+      <PageTitle title="View all the current posted projects by supervisors already sorted based on what we think you'll like!" />
+      <ContentBox
+        title="How we sort"
+        description="The current projects are sorted based on the information you entered when signing up and how you rated past projects."
+      />
+      <TablePanel
+        title="Current Projects"
+        columns={["Title", "Supervisor", "Description"]}
+        rows={[
+          [
+            "Project Title 1",
+            "Supervisor 1",
+            "An online platform allows sitters to offer babysitting/day-care services to parents. The sitters can list down their specific offers and parents can search for sitters that suit their specific needs.",
+          ],
+          [
+            "Project Title 2",
+            "Supervisor 2",
+            "An online platform allows sitters to offer babysitting/day-care services to parents. The sitters can list down their specific offers and parents can search for sitters that suit their specific needs.",
+          ],
+        ]}
+      />
     </AppView>
   );
 };

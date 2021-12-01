@@ -3,5 +3,5 @@ interface PageTitleProps {
 }
 
 export const PageTitle: React.FC<PageTitleProps> = ({ title }) => {
-  return <h1 className="text-lg font-medium text-black">{title}</h1>;
+  return <h1 className="max-w-3xl text-lg font-medium text-black">{title}</h1>;
 };

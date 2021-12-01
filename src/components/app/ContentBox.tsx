@@ -54,9 +54,13 @@ export const ContentBox: React.FC<ContentBoxProps> = (props) => {
 
   return (
     <div className="w-full p-6 flex flex-col bg-white rounded-md shadow-md">
-      <h2 className="text-md font-medium mb-4">{title}</h2>
+      <h2 className="text-md font-medium mb-4 max-w-3xl">{title}</h2>
       {description ? (
-        <p className={`text-base ${hasButton || children ? "mb-4" : ""}`}>
+        <p
+          className={`text-base max-w-3xl ${
+            hasButton || children ? "mb-4" : ""
+          }`}
+        >
           {description}
         </p>
       ) : null}

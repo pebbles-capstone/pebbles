@@ -12,7 +12,7 @@ interface AuthPage {
 
 const Team: NextPage<AuthPage> = ({ user }) => {
   return (
-    <AppView name={user.name}>
+    <AppView name={user.name} width="standard">
       <div>
         <h1>Your Team</h1>
         <p>Users can view their current team here</p>

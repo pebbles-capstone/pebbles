@@ -14,7 +14,7 @@ interface AuthPage {
 
 const PotentialTeammates: NextPage<AuthPage> = ({ user }) => {
   return (
-    <AppView name={user.name}>
+    <AppView name={user.name} width="wide">
       <PageTitle title="Based on your project likings and everyone elses’, we suggest teaming with any of the following students!" />
     </AppView>
   );
