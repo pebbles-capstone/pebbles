@@ -2,10 +2,10 @@
   grid-template-columns: 100%;
 
   @media (min-width: 768px) {
-    grid-template-columns: 14rem minmax(0, 1fr);
+    grid-template-columns: 15rem minmax(0, 1fr);
   }
 
   @media (min-width: 900px) {
-    grid-template-columns: 16rem minmax(0, 1fr);
+    grid-template-columns: 18rem minmax(0, 1fr);
   }
 }

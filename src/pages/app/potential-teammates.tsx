@@ -1,5 +1,7 @@
 import type { NextPage } from "next";
 import { AppView } from "../../components/app/AppView";
+import { ContentBox } from "../../components/app/ContentBox";
+import { PageTitle } from "../../components/app/PageTitle";
 
 interface MockUser {
   name: string;
@@ -10,13 +12,10 @@ interface AuthPage {
   user: MockUser;
 }
 
-const AppAccount: NextPage<AuthPage> = ({ user }) => {
+const PotentialTeammates: NextPage<AuthPage> = ({ user }) => {
   return (
     <AppView name={user.name}>
-      <div>
-        <h1>Teammates</h1>
-        <p>Users view possible and suggested teammates here</p>
-      </div>
+      <PageTitle title="Based on your project likings and everyone elses’, we suggest teaming with any of the following students!" />
     </AppView>
   );
 };
@@ -40,4 +39,4 @@ export const getServerSideProps = async (context) => {
   };
 };
 
-export default AppAccount;
+export default PotentialTeammates;

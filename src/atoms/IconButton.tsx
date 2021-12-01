@@ -30,7 +30,7 @@ export const IconButton: React.FC<IconButtonProps> = (props) => {
     return (
       <Link href={link}>
         <a>
-          <Icon icon={icon} size={size} />
+          <Icon icon={icon} size={size} className={className} />
         </a>
       </Link>
     );
@@ -39,7 +39,7 @@ export const IconButton: React.FC<IconButtonProps> = (props) => {
   // external link using <a> tag
   else if (isLink && !isInternal && link) {
     return (
-      <a href={link} target="_blank" rel="noreferrer">
+      <a href={link} target="_blank" rel="noreferrer" className={className}>
         <Icon icon={icon} size={size} />
       </a>
     );
@@ -48,7 +48,7 @@ export const IconButton: React.FC<IconButtonProps> = (props) => {
   // button with an onClick event handler
   else {
     return (
-      <button onClick={onClick} type="button">
+      <button onClick={onClick} type="button" className={className}>
         <Icon icon={icon} size={size} />
       </button>
     );

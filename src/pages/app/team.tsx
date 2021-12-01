@@ -10,7 +10,7 @@ interface AuthPage {
   user: MockUser;
 }
 
-const AppAccount: NextPage<AuthPage> = ({ user }) => {
+const Team: NextPage<AuthPage> = ({ user }) => {
   return (
     <AppView name={user.name}>
       <div>
@@ -40,4 +40,4 @@ export const getServerSideProps = async (context) => {
   };
 };
 
-export default AppAccount;
+export default Team;

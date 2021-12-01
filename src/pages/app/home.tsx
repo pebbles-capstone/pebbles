@@ -19,11 +19,22 @@ const AppHome: NextPage<AuthPage> = ({ user }) => {
       <ContentBox
         title="Start rating past projects"
         description="By liking/disliking past projects, we can determine what types of projects interest you and can help suggest teammates who have similar interests and likings."
+        hasButton={true}
         buttonText="Start rating"
         buttonIsLink={true}
         buttonIsInternal={true}
         buttonLink="/app/projects"
-      />
+      >
+        <div className="flex flex-col">
+          <p>You've rated</p>
+          <p className="text-xxxl">18/100</p>
+          <p>past projects so far,</p>
+          <p className="mt-4">
+            We reccomend rating atleast 20 past projects to get accurate
+            teammate suggestions. However, the more you can do, the better!
+          </p>
+        </div>
+      </ContentBox>
       <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-8">
         <ContentBox
           title="Potential teammates"

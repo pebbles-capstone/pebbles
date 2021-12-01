@@ -53,7 +53,7 @@ export const ContentBox: React.FC<ContentBoxProps> = (props) => {
   }
 
   return (
-    <div className="w-full p-6 flex flex-col bg-white rounded-md">
+    <div className="w-full p-6 flex flex-col bg-white rounded-md shadow-md">
       <h2 className="text-md font-medium mb-4">{title}</h2>
       {description ? (
         <p className={`text-base ${hasButton || children ? "mb-4" : ""}`}>
@@ -61,7 +61,7 @@ export const ContentBox: React.FC<ContentBoxProps> = (props) => {
         </p>
       ) : null}
       {children ? (
-        <div className={`w-full ${hasButton ? "mb-4" : ""}`}>children</div>
+        <div className={`w-full ${hasButton ? "mb-4" : ""}`}>{children}</div>
       ) : null}
       {hasButton ? button : null}
     </div>

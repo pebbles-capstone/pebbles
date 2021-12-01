@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LogoText } from "../LogoText";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -13,7 +13,30 @@ interface MenuProps {
 
 export const Menu: React.FC<MenuProps> = ({ name }) => {
   const router = useRouter();
+
+  const [currentTab, setCurrentTab] = useState(-1);
+
+  const switchTab = (tabNum: number) => {
+    setCurrentTab(tabNum);
+  };
+
   const currentPath = router.pathname;
+
+  useEffect(() => {
+    if (currentPath === "/app/home") switchTab(0);
+    else if (
+      currentPath === "/app/past-projects" ||
+      currentPath === "/app/current-projects"
+    )
+      switchTab(1);
+    else if (
+      currentPath === "/app/potential-teammates" ||
+      currentPath === "/app/team"
+    )
+      switchTab(2);
+    else if (currentPath === "/app/supervisors") switchTab(3);
+    else switchTab(-1);
+  }, [currentPath]);
 
   // menu open/close logic for mobile
   const [isOpen, setIsOpen] = useState(false);
@@ -25,16 +48,19 @@ export const Menu: React.FC<MenuProps> = ({ name }) => {
   };
 
   const currentPathStyle =
-    "bg-grey-light px-4 py-2 rounded-md mb-2 focus-within:outline-black flex items-center w-full";
+    "bg-grey-light px-4 py-2 rounded-md mb-1 flex items-center w-full";
 
   const generalPathStyle =
-    "px-4 py-2 rounded-md mb-2 focus-within:outline-black flex items-center w-full transition hover:bg-grey-light hover:bg-opacity-50";
+    "px-4 py-2 rounded-md mb-1 flex items-center w-full transition hover:bg-grey-light hover:bg-opacity-50";
+
+  const currentNestedPathStyle =
+    "px-4 py-2 rounded-md flex items-center w-full";
 
   return (
     <nav
-      className={`AppMenu grid w-full sm:w-56 md:w-64 ${
+      className={`AppMenu grid w-full sm:w-60 md:w-72 ${
         isOpen ? "h-screen" : "h-fit-content AppMenu--closed"
-      } md:h-screen fixed top-0 left-0 p-4 md:px-8 md:py-6 bg-white`}
+      } sm:h-screen fixed top-0 left-0 p-4 md:px-8 md:py-6 bg-white`}
     >
       <div className="w-full flex justify-between items-center">
         <LogoText />
@@ -45,104 +71,150 @@ export const Menu: React.FC<MenuProps> = ({ name }) => {
           isInternal={false}
           ariaLabel={isOpen ? "Close menu" : "Open menu"}
           onClick={toggleMenu}
+          className="md:hidden"
         ></IconButton>
       </div>
-      <div className={isOpen ? "" : "hidden"}>
+      <div className={`${isOpen ? "" : "hidden"} sm:block`}>
         <ul className="border-b border-grey pb-2 mb-4">
-          <li
-            className={
-              currentPath === "/app/home" ? currentPathStyle : generalPathStyle
-            }
-          >
+          <li>
             <Link href="/app/home">
-              <a className="text-base font-medium focus:outline-none w-full">
+              <a
+                className={`text-base font-medium w-full ${
+                  currentTab === 0 ? currentPathStyle : generalPathStyle
+                }`}
+              >
                 Home
               </a>
             </Link>
           </li>
-          <li
-            className={
-              currentPath === "/app/projects"
-                ? currentPathStyle
-                : generalPathStyle
-            }
-          >
-            <Link href="/app/projects">
-              <a className="text-base font-medium focus:outline-none w-full">
-                Projects
-              </a>
-            </Link>
+          <li className="flex-col justify-start">
+            <>
+              <Link href="/app/past-projects">
+                <a
+                  className={`text-base font-medium w-full  ${
+                    currentTab === 1 ? currentNestedPathStyle : generalPathStyle
+                  }`}
+                >
+                  Projects
+                </a>
+              </Link>
+              {currentTab === 1 ? (
+                <ul className="list-outside w-full pl-6">
+                  <li>
+                    <Link href="/app/past-projects">
+                      <a
+                        className={`text-base w-full ${
+                          currentPath === "/app/past-projects"
+                            ? currentPathStyle
+                            : generalPathStyle
+                        }`}
+                      >
+                        Past Projects
+                      </a>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/app/current-projects">
+                      <a
+                        className={`text-base w-full ${
+                          currentPath === "/app/current-projects"
+                            ? currentPathStyle
+                            : generalPathStyle
+                        }`}
+                      >
+                        Current Projects
+                      </a>
+                    </Link>
+                  </li>
+                </ul>
+              ) : null}
+            </>
           </li>
-          <li
-            className={
-              currentPath === "/app/teammates"
-                ? currentPathStyle
-                : generalPathStyle
-            }
-          >
-            <Link href="/app/teammates">
-              <a className="text-base font-medium focus:outline-none w-full">
+          <li className="flex-col justify-start">
+            <Link href="/app/potential-teammates">
+              <a
+                className={`text-base font-medium w-full ${
+                  currentTab === 2 ? currentNestedPathStyle : generalPathStyle
+                }`}
+              >
                 Teammates
               </a>
             </Link>
+            {currentTab === 2 ? (
+              <ul className="list-outside w-full pl-6">
+                <li>
+                  <Link href="/app/potential-teammates">
+                    <a
+                      className={`${
+                        currentPath === "/app/potential-teammates"
+                          ? currentPathStyle
+                          : generalPathStyle
+                      } text-base w-full`}
+                    >
+                      Potential Teammates
+                    </a>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/app/team">
+                    <a
+                      className={`${
+                        currentPath === "/app/team"
+                          ? currentPathStyle
+                          : generalPathStyle
+                      } text-base w-full`}
+                    >
+                      Your Team
+                    </a>
+                  </Link>
+                </li>
+              </ul>
+            ) : null}
           </li>
-          <li
-            className={
-              currentPath === "/app/your-team"
-                ? currentPathStyle
-                : generalPathStyle
-            }
-          >
-            <Link href="/app/your-team">
-              <a className="text-base font-medium focus:outline-none w-full">
-                Your Team
-              </a>
-            </Link>
-          </li>
-          <li
-            className={
-              currentPath === "/app/supervisors"
-                ? currentPathStyle
-                : generalPathStyle
-            }
-          >
+          <li>
             <Link href="/app/supervisors">
-              <a className="text-base font-medium focus:outline-none w-full">
+              <a
+                className={`${
+                  currentTab === 3 ? currentPathStyle : generalPathStyle
+                } text-base font-medium w-full`}
+              >
                 Supervisors
               </a>
             </Link>
           </li>
         </ul>
         <ul>
-          <li
-            className={
-              currentPath === "/app/account"
-                ? currentPathStyle
-                : generalPathStyle
-            }
-          >
+          <li>
             <Link href="/app/account">
-              <a className="text-base font-medium focus:outline-none w-full">
+              <a
+                className={`${
+                  currentPath === "/app/account"
+                    ? currentPathStyle
+                    : generalPathStyle
+                } text-base font-medium w-full`}
+              >
                 Account
               </a>
             </Link>
           </li>
-          <li
-            className={
-              currentPath === "/app/settings"
-                ? currentPathStyle
-                : generalPathStyle
-            }
-          >
+          <li>
             <Link href="/app/settings">
-              <a className="text-base font-medium focus:outline-none w-full">
+              <a
+                className={`${
+                  currentPath === "/app/settings"
+                    ? currentPathStyle
+                    : generalPathStyle
+                } text-base font-medium w-full`}
+              >
                 Settings
               </a>
             </Link>
           </li>
         </ul>
       </div>
-      <div className={`${isOpen ? "flex" : "hidden"} flex-col justify-end`}>
+      <div
+        className={`${isOpen ? "flex" : "hidden"} flex-col justify-end sm:flex`}
+      >
         <Link href="/app/account">
           <a className="flex items-center">
             <Avatar name={name} />

@@ -28,7 +28,7 @@ export const CheckBoxGroup: React.FC<CheckBoxGroupProps> = (props) => {
 
   const labelStyle = `
     font-sans-serif text-sans-serif-md rounded w-fit-content h-fit-content px-4 py-2 mr-3 mt-3 cursor-pointer
-    focus-within:outline-black
+    focus-within:ring-2
   `;
 
   const inputStyle = "w-0 h-0 focus:outline-none";
