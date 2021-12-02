@@ -1,5 +1,6 @@
 import type { NextPage } from "next";
 import { AppView } from "../../components/app/AppView";
+import { PageTitle } from "../../components/app/PageTitle";
 
 interface MockUser {
   name: string;
@@ -13,10 +14,7 @@ interface AuthPage {
 const AppAccount: NextPage<AuthPage> = ({ user }) => {
   return (
     <AppView name={user.name} width="standard">
-      <div>
-        <h1>Supervisors</h1>
-        <p>Users can view supervisors and their proposed projects here</p>
-      </div>
+      <PageTitle title="Based on your project likings and everyone elses’, we suggest contacting the following supervisors!" />
     </AppView>
   );
 };

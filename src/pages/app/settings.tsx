@@ -1,5 +1,6 @@
 import type { NextPage } from "next";
 import { AppView } from "../../components/app/AppView";
+import { PageTitle } from "../../components/app/PageTitle";
 
 interface MockUser {
   name: string;
@@ -13,12 +14,7 @@ interface AuthPage {
 const AppAccount: NextPage<AuthPage> = ({ user }) => {
   return (
     <AppView name={user.name} width="standard">
-      <div>
-        <h1>Settings</h1>
-        <p>
-          Users can control app settings here like possibly dark mode/light mode
-        </p>
-      </div>
+      <PageTitle title="Settings" />
     </AppView>
   );
 };

@@ -1,5 +1,7 @@
 import type { NextPage } from "next";
 import { AppView } from "../../components/app/AppView";
+import { PageTitle } from "../../components/app/PageTitle";
+import { AccountEdit } from "../../components/app/AccountEdit";
 
 interface MockUser {
   name: string;
@@ -13,10 +15,8 @@ interface AuthPage {
 const AppAccount: NextPage<AuthPage> = ({ user }) => {
   return (
     <AppView name={user.name} width="standard">
-      <div>
-        <h1>Account</h1>
-        <p>Users can edit their general information and interests</p>
-      </div>
+      <PageTitle title="Account" />
+      <AccountEdit />
     </AppView>
   );
 };
