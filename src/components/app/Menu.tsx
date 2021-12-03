@@ -59,8 +59,10 @@ export const Menu: React.FC<MenuProps> = ({ name }) => {
   return (
     <nav
       className={`AppMenu grid w-full sm:w-60 md:w-72 ${
-        isOpen ? "h-screen" : "h-fit-content AppMenu--closed"
-      } sm:h-screen fixed top-0 left-0 p-4 md:px-8 md:py-6 bg-white`}
+        isOpen
+          ? "h-screen"
+          : "h-fit-content AppMenu--closed shadow md:shadow-none"
+      } sm:h-screen fixed z-40 top-0 left-0 p-4 md:px-8 md:py-6 bg-white`}
     >
       <div className="w-full flex justify-between items-center">
         <LogoText />

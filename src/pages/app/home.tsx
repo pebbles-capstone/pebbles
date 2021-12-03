@@ -23,7 +23,7 @@ const AppHome: NextPage<AuthPage> = ({ user }) => {
         buttonText="Start rating"
         buttonIsLink={true}
         buttonIsInternal={true}
-        buttonLink="/app/projects"
+        buttonLink="/app/past-projects"
       >
         <div className="flex flex-col">
           <p>You've rated</p>
@@ -43,7 +43,7 @@ const AppHome: NextPage<AuthPage> = ({ user }) => {
           buttonText="Start rating"
           buttonIsLink={true}
           buttonIsInternal={true}
-          buttonLink="/app/projects"
+          buttonLink="/app/past-projects"
         />
         <ContentBox
           title="Potential supervisors"
@@ -52,7 +52,7 @@ const AppHome: NextPage<AuthPage> = ({ user }) => {
           buttonText="Start rating"
           buttonIsLink={true}
           buttonIsInternal={true}
-          buttonLink="/app/projects"
+          buttonLink="/app/past-projects"
         />
       </div>
     </AppView>

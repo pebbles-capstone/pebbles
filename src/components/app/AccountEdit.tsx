@@ -175,6 +175,7 @@ export const AccountEdit: React.FC<AccountEditProps> = (props) => {
           <p className="mb-4">udit.desai3@gmail.com</p>
           <h3 className="text-base font-medium mb-1">Full name</h3>
           <p className="mb-6">Udit Desai</p>
+          <h3 className="text-base font-medium mb-1">Password</h3>
           <Button
             isLink={false}
             isInternal={false}
@@ -182,7 +183,7 @@ export const AccountEdit: React.FC<AccountEditProps> = (props) => {
             text="Reset password"
             ariaLabel="Reset password"
             size="md"
-            style="border-primary"
+            style="blank"
           />
           <h3 className="text-base font-medium mt-6 mb-1">Discipline</h3>
           <p className="mb-4">Computer</p>
