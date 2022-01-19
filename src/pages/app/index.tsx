@@ -10,7 +10,7 @@ export const getServerSideProps = async (context) => {
   }
 
   return {
-    redirect: { permanent: true, destination: `/app/home` },
+    redirect: { permanent: false, destination: `/app/home` },
   };
 };
 

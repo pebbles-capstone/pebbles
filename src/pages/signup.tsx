@@ -5,14 +5,13 @@ import { AuthView } from "../components/auth/AuthView";
 import { SignUpStep1 } from "../components/auth/SignUpStep1";
 import { SignUpStep2 } from "../components/auth/SignUpStep2";
 import { SignUpStep3 } from "../components/auth/SignUpStep3";
+import { Discipline } from "../types";
 
 const stepNames: { [key: number]: string } = {
   0: "General information",
   1: "ECE information",
   2: "Interests",
 };
-
-export type Discipline = "Computer" | "Electrical";
 
 const SignUp: NextPage = () => {
   // Step state controls which part of signup user sees
