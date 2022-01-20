@@ -1,10 +1,10 @@
 import React, { createContext, useEffect, useState, useContext } from "react";
-import Amplify, { Auth } from "aws-amplify";
-import awsmobile from "../../aws-exports";
+import Amplify, { Auth, withSSRContext } from "aws-amplify";
+import awsExports from "../../aws-exports";
 import { GetServerSidePropsContext } from "next";
 import { UserData, User } from "../types";
 
-Amplify.configure(awsmobile);
+Amplify.configure({ ...awsExports, ssr: true });
 
 // Assign types to anything added to the context provider value prop.
 // This enables type checking in context consumers.
@@ -37,9 +37,14 @@ const defaultUserValue = null;
 export const withAuth = async (
   context: GetServerSidePropsContext
 ): Promise<User | null> => {
-  const user = await Auth.currentAuthenticatedUser();
-  if (user) return user;
-  return defaultUserValue;
+  const SSR = withSSRContext(context);
+  try {
+    const user = await SSR.Auth.currentAuthenticatedUser();
+    if (user) return user;
+    else return defaultUserValue;
+  } catch (err) {
+    return defaultUserValue;
+  }
 };
 
 export const AuthProvider: React.FC = ({ children }) => {
@@ -105,17 +110,12 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   const signInUser: AuthContext["signInUser"] = async (email, password) => {
     setLoadingUser(true);
-    try {
-      const user = await Auth.signIn(email, password);
-      if (user) {
-        setUser(user);
-        setLoadingUser(false);
-        return user;
-      } else {
-        return defaultUserValue;
-      }
-    } catch (error) {
-      console.log("error signing in", error);
+    const user = await Auth.signIn(email, password);
+    if (user) {
+      setUser(user);
+      setLoadingUser(false);
+      return user;
+    } else {
       return defaultUserValue;
     }
   };

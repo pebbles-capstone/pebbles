@@ -1,11 +1,13 @@
+import { withAuth } from "../../contexts/Auth";
+
 function AppIndex() {
   return <div>Redirecting…</div>;
 }
 
 export const getServerSideProps = async (context) => {
-  const loggedIn = true;
+  const user = await withAuth(context);
 
-  if (!loggedIn) {
+  if (!user) {
     return { redirect: { permanent: false, destination: "/signin" } };
   }
 

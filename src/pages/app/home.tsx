@@ -8,18 +8,6 @@ import { useRouter } from "next/router";
 interface AuthPage {}
 
 const AppHome: NextPage<AuthPage> = () => {
-  const router = useRouter();
-  const { loadingUser, user } = useAuth();
-
-  console.log(loadingUser, user);
-
-  if (loadingUser) return null;
-
-  if (!user) {
-    router.push("/signin");
-    return null;
-  }
-
   return (
     <AppView name={"Udit Desai"} width="standard">
       <PageTitle title="Good morning Udit, check out your progress below." />
@@ -68,6 +56,7 @@ const AppHome: NextPage<AuthPage> = () => {
 
 export const getServerSideProps = async (context) => {
   // boolean to control if someone is logged in or not atm
+
   return {
     // will be passed to the page component as props
     props: {

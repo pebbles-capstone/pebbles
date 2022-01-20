@@ -4,8 +4,13 @@ import { AuthView } from "../components/auth/AuthView";
 import { Formik } from "formik";
 import { Button } from "../atoms/Button";
 import { TextInput } from "../atoms/TextInput";
+import { useAuth } from "../contexts/Auth";
+import { useRouter } from "next/router";
 
 const SignIn: NextPage = () => {
+  const { signInUser } = useAuth();
+  const router = useRouter();
+
   return (
     <AuthView>
       <div className="w-full flex flex-col">
@@ -21,24 +26,16 @@ const SignIn: NextPage = () => {
 
             return errors;
           }}
-          onSubmit={(values, { setErrors }) => {
-            const newErrors: { [key: string]: string } = {};
-            let isError = false;
-
-            if (values.password !== "password") {
-              isError = true;
-              newErrors.password = "Password is incorrect";
+          onSubmit={async (values, { setStatus }) => {
+            try {
+              const user = await signInUser(values.email, values.password);
+              if (user) router.push("/app/home");
+            } catch (err: any) {
+              setStatus(err.message);
             }
-
-            if (isError) {
-              setErrors(newErrors);
-              return;
-            }
-
-            console.log(values);
           }}
         >
-          {({ values, errors, handleChange, handleSubmit }) => (
+          {({ values, errors, status, handleChange, handleSubmit }) => (
             <form onSubmit={handleSubmit} className="flex flex-col">
               <TextInput
                 type="email"
@@ -59,9 +56,10 @@ const SignIn: NextPage = () => {
                 placeholder="Enter your password"
                 label="Password"
                 id="signInPassword"
-                wrapperClassName="mb-6"
+                wrapperClassName="mb-4"
                 error={errors.password}
               />
+              {!!status && <p className="text-red mb-6">{status}</p>}
               <Button
                 size="sm"
                 text="Sign in"
@@ -69,7 +67,7 @@ const SignIn: NextPage = () => {
                 isLink={false}
                 isInternal={false}
                 style="border-primary"
-                type="primary"
+                type="submit"
                 disabled={values.email === "" || values.password === ""}
               />
             </form>

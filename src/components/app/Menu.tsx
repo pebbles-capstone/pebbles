@@ -6,6 +6,7 @@ import { Button } from "../../atoms/Button";
 import { Avatar } from "./Avatar";
 import { Icon } from "../../atoms/Icon";
 import { IconButton } from "../../atoms/IconButton";
+import { useAuth } from "../../contexts/Auth";
 
 interface MenuProps {
   name: string;
@@ -13,6 +14,15 @@ interface MenuProps {
 
 export const Menu: React.FC<MenuProps> = ({ name }) => {
   const router = useRouter();
+  const { signOutUser } = useAuth();
+
+  const signOut = async () => {
+    const result = await signOutUser();
+    if (result) router.push("/");
+    else {
+      console.log("error signing out");
+    }
+  };
 
   const [currentTab, setCurrentTab] = useState(-1);
 
@@ -229,7 +239,7 @@ export const Menu: React.FC<MenuProps> = ({ name }) => {
           ariaLabel="Sign out"
           isLink={false}
           isInternal={false}
-          onClick={() => {}}
+          onClick={signOut}
           size="sm"
           className="mt-4"
         />
