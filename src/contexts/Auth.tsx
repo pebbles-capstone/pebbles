@@ -25,7 +25,7 @@ type AuthContext = {
   signInUser: (email: string, password: string) => Promise<CognitoUser | null>;
   signOutUser: () => Promise<boolean>;
   loadingUser: boolean;
-  user: User | null;
+  user: CognitoUser | null;
 };
 
 const AuthContext = createContext<AuthContext | null>(null);
@@ -51,7 +51,7 @@ export const withAuth = async (
 };
 
 export const AuthProvider: React.FC = ({ children }) => {
-  const [user, setUser] = useState<User | null>(defaultUserValue);
+  const [user, setUser] = useState<CognitoUser | null>(defaultUserValue);
   const [loadingUser, setLoadingUser] = useState<boolean>(true);
 
   const checkIfUserLoggedIn: AuthContext["checkIfUserLoggedIn"] = async () => {

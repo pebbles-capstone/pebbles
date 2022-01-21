@@ -74,7 +74,7 @@ const SignIn: NextPage = () => {
           )}
         </Formik>
         <p className="mt-8">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <Link href="/signup">
             <a className="text-blue-dark">Sign up!</a>
           </Link>

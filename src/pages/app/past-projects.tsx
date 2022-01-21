@@ -36,7 +36,7 @@ const PastProjects: NextPage<AuthPage> = () => {
       <ProjectPanel project={mockProject} like={like} dislike={dislike} />
       <ContentBox title="Project Rating Progress">
         <div className="flex flex-col">
-          <p>You've rated</p>
+          <p>You&apos;ve rated</p>
           <p className="text-xxxl">18/100</p>
           <p>past projects so far,</p>
           <p className="mt-4">
@@ -49,7 +49,7 @@ const PastProjects: NextPage<AuthPage> = () => {
   );
 };
 
-export const getServerSideProps = async (context) => {
+export const getServerSideProps = async (context: any) => {
   const user = await withAuth(context);
 
   if (!user) {

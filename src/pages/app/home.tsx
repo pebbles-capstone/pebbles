@@ -2,8 +2,6 @@ import type { NextPage } from "next";
 import { AppView } from "../../components/app/AppView";
 import { ContentBox } from "../../components/app/ContentBox";
 import { PageTitle } from "../../components/app/PageTitle";
-import { useAuth } from "../../contexts/Auth";
-import { useRouter } from "next/router";
 import { withAuth } from "../../contexts/Auth";
 
 interface AuthPage {}
@@ -22,7 +20,7 @@ const AppHome: NextPage<AuthPage> = () => {
         buttonLink="/app/past-projects"
       >
         <div className="flex flex-col">
-          <p>You've rated</p>
+          <p>You&apos;ve rated</p>
           <p className="text-xxxl">18/100</p>
           <p>past projects so far,</p>
           <p className="mt-4">
@@ -55,7 +53,7 @@ const AppHome: NextPage<AuthPage> = () => {
   );
 };
 
-export const getServerSideProps = async (context) => {
+export const getServerSideProps = async (context: any) => {
   const user = await withAuth(context);
 
   if (!user) {

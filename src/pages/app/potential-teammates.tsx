@@ -19,7 +19,7 @@ const PotentialTeammates: NextPage<AuthPage> = () => {
   );
 };
 
-export const getServerSideProps = async (context) => {
+export const getServerSideProps = async (context: any) => {
   const user = await withAuth(context);
 
   if (!user) {
