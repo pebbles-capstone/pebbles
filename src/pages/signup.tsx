@@ -1,11 +1,11 @@
 import { useState } from "react";
 import Link from "next/link";
 import type { NextPage } from "next";
-import { AuthView } from "../components/Authstuff/AuthView";
-import { SignUpStep1 } from "../components/Authstuff/SignUpStep1";
-import { SignUpStep2 } from "../components/Authstuff/SignUpStep2";
-import { SignUpStep3 } from "../components/Authstuff/SignUpStep3";
-import { SignUpStep4 } from "../components/Authstuff/SignUpStep4";
+import { AuthView } from "../components/Auth/AuthView";
+import { SignUpStep1 } from "../components/Auth/SignUpStep1";
+import { SignUpStep2 } from "../components/Auth/SignUpStep2";
+import { SignUpStep3 } from "../components/Auth/SignUpStep3";
+import { SignUpStep4 } from "../components/Auth/SignUpStep4";
 import { Discipline, Area } from "../types";
 
 const stepNames: { [key: number]: string } = {

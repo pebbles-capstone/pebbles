@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { NextPage } from "next";
-import { AuthView } from "../components/Authstuff/AuthView";
+import { AuthView } from "../components/Auth/AuthView";
 import { Formik } from "formik";
 import { Button } from "../atoms/Button";
 import { TextInput } from "../atoms/TextInput";
