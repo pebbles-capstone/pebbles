@@ -4,6 +4,7 @@ const rem = (px) => `${px / 16}rem`;
 module.exports = {
   purge: {
     content: [
+      "./src/atoms/**/*.{js,ts,jsx,tsx}",
       "./src/components/**/*.{js,ts,jsx,tsx}",
       "./src/pages/**/*.{js,ts,jsx,tsx}",
     ],
