@@ -2,19 +2,18 @@ import type { NextPage } from "next";
 import { AppView } from "../../components/app/AppView";
 import { PageTitle } from "../../components/app/PageTitle";
 import { AccountEdit } from "../../components/app/AccountEdit";
+import { withAuth } from "../../contexts/Auth";
 
 interface MockUser {
   name: string;
   email: string;
 }
 
-interface AuthPage {
-  user: MockUser;
-}
+interface AuthPage {}
 
-const AppAccount: NextPage<AuthPage> = ({ user }) => {
+const AppAccount: NextPage<AuthPage> = () => {
   return (
-    <AppView name={user.name} width="standard">
+    <AppView name={"udit desai"} width="standard">
       <PageTitle title="Account" />
       <AccountEdit />
     </AppView>
@@ -22,21 +21,14 @@ const AppAccount: NextPage<AuthPage> = ({ user }) => {
 };
 
 export const getServerSideProps = async (context) => {
-  // boolean to control if someone is logged in or not atm
-  const loggedIn = true;
+  const user = await withAuth(context);
 
-  if (!loggedIn) {
+  if (!user) {
     return { redirect: { permanent: false, destination: "/signin" } };
   }
 
   return {
-    // will be passed to the page component as props
-    props: {
-      user: {
-        name: "Udit Desai",
-        email: "udit.desai3@gmail.com",
-      },
-    },
+    props: {}, // will be passed to the page component as props
   };
 };
 

@@ -3,24 +3,26 @@ import Amplify, { Auth, withSSRContext } from "aws-amplify";
 import awsExports from "../../aws-exports";
 import { GetServerSidePropsContext } from "next";
 import { UserData, User } from "../types";
+import { CognitoUser } from "amazon-cognito-identity-js";
 
 Amplify.configure({ ...awsExports, ssr: true });
 
 // Assign types to anything added to the context provider value prop.
 // This enables type checking in context consumers.
 type AuthContext = {
-  checkIfUserLoggedIn: () => Promise<User | null>;
+  checkIfUserLoggedIn: () => Promise<CognitoUser | null>;
   signUpUser: (
     email: string,
     password: string,
+    fullName: string,
     data: UserData
   ) => Promise<boolean>;
   confirmSignUpUser: (
     email: string,
     password: string,
     code: string
-  ) => Promise<User | null>;
-  signInUser: (email: string, password: string) => Promise<User | null>;
+  ) => Promise<CognitoUser | null>;
+  signInUser: (email: string, password: string) => Promise<CognitoUser | null>;
   signOutUser: () => Promise<boolean>;
   loadingUser: boolean;
   user: User | null;
@@ -36,13 +38,14 @@ const defaultUserValue = null;
  */
 export const withAuth = async (
   context: GetServerSidePropsContext
-): Promise<User | null> => {
+): Promise<CognitoUser | null> => {
   const SSR = withSSRContext(context);
   try {
     const user = await SSR.Auth.currentAuthenticatedUser();
     if (user) return user;
     else return defaultUserValue;
   } catch (err) {
+    console.log("user not logged in", err);
     return defaultUserValue;
   }
 };
@@ -59,31 +62,30 @@ export const AuthProvider: React.FC = ({ children }) => {
         setUser(user);
       } else return defaultUserValue;
     } catch (err) {
-      console.log("user not logged in", err);
+      console.log(err);
     }
   };
 
   const signUpUser: AuthContext["signUpUser"] = async (
     email,
     password,
+    name,
     data
   ) => {
     // await Users.create({ email, password, handle, data });
     // const user = await signInUser(email, password);
     // return user;
-    try {
-      const user = await Auth.signUp({
-        username: email,
-        password: password,
-      });
-      if (user) {
-        // store user data in local storage
-        return true;
-      } else {
-        return false;
-      }
-    } catch (error) {
-      console.log("error signing up:", error);
+    const user = await Auth.signUp({
+      username: email,
+      password: password,
+      attributes: {
+        name: name,
+      },
+    });
+    if (user) {
+      // store user data in local storage
+      return true;
+    } else {
       return false;
     }
   };
@@ -94,16 +96,11 @@ export const AuthProvider: React.FC = ({ children }) => {
     code
   ) => {
     setLoadingUser(true);
-    try {
-      const result = await Auth.confirmSignUp(email, code);
-      if (result && result === "SUCCESS") {
-        const user = await signInUser(email, password);
-        return user;
-      } else {
-        return defaultUserValue;
-      }
-    } catch (error) {
-      console.log("error confirming sign up", error);
+    const result = await Auth.confirmSignUp(email, code);
+    if (result && result === "SUCCESS") {
+      const user = await signInUser(email, password);
+      return user;
+    } else {
       return defaultUserValue;
     }
   };

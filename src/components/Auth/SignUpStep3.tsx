@@ -1,7 +1,9 @@
 import { useFormik } from "formik";
 import { Button } from "../../atoms/Button";
 import { CheckBoxGroup } from "../../atoms/CheckBoxGroup";
-import { Discipline } from "../../pages/signup";
+import { Discipline, Area } from "../../types";
+import { useAuth } from "../../contexts/Auth";
+import { useRouter } from "next/router";
 
 interface SignUpStep3Props {
   next: () => void;
@@ -10,8 +12,8 @@ interface SignUpStep3Props {
   name: string;
   password: string;
   confirmPassword: string;
-  discipline: Discipline | "";
-  areas: string[];
+  discipline: Discipline;
+  areas: Area[];
   interests: string[];
   setSavedInterests: (arg0: string[]) => void;
 }
@@ -34,6 +36,9 @@ export const SignUpStep3: React.FC<SignUpStep3Props> = (props) => {
     setSavedInterests,
   } = props;
 
+  const { signUpUser } = useAuth();
+  const router = useRouter();
+
   const goBack = () => {
     setSavedInterests(formik.values.interests);
     prev();
@@ -50,30 +55,23 @@ export const SignUpStep3: React.FC<SignUpStep3Props> = (props) => {
       const errors: { [key: string]: string } = {};
 
       if (values.interests.length === 0)
-        errors.areas = "Interests are required";
-
-      if (values.interests.length < 3)
-        errors.area = "More than 3 interests are required";
+        errors.interests = "Interests are required";
 
       return errors;
     },
-    onSubmit: (values, { setErrors }) => {
-      const newErrors: { [key: string]: string } = {};
-      let isError = false;
-
-      if (values.interests.includes("i4")) {
-        isError = true;
-        newErrors.general = "There was an error in the server";
+    onSubmit: async (values, { setStatus }) => {
+      try {
+        const data = {
+          discipline: discipline,
+          areas: areas,
+          interests: interests,
+        };
+        const user = await signUpUser(email, password, name, data);
+        if (user) next();
+      } catch (err: any) {
+        console.log(err);
+        setStatus(err.message);
       }
-
-      if (isError) {
-        setErrors(newErrors);
-        return;
-      }
-
-      setSavedInterests(values.interests);
-
-      console.log(values);
     },
   });
 
@@ -94,7 +92,9 @@ export const SignUpStep3: React.FC<SignUpStep3Props> = (props) => {
         onChange={formik.handleChange}
         name="interests"
         className="mb-8"
+        error={formik.errors.interests as string}
       />
+      {!!formik.status && <p className="text-red mb-6">{formik.status}</p>}
       <div className="flex">
         <Button
           size="sm"
@@ -108,8 +108,8 @@ export const SignUpStep3: React.FC<SignUpStep3Props> = (props) => {
         />
         <Button
           size="sm"
-          text="Next"
-          ariaLabel="Next step"
+          text="Signup"
+          ariaLabel="Signup"
           isLink={false}
           isInternal={false}
           style="border-primary"

@@ -16,7 +16,6 @@ export type Area =
   | "Software";
 
 export interface UserData {
-  name: string;
   discipline: Discipline,
   areas: Area[],
   interests: string[]
@@ -25,5 +24,6 @@ export interface UserData {
 export interface User {
   id: string;
   email: string;
+  name: string;
   data: UserData;
 }

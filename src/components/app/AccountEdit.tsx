@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
 import { useState } from "react";
 import { Button } from "../../atoms/Button";
-import { Discipline } from "../../pages/signup";
+import { Discipline, Area } from "../../types";
 import { TextInput } from "../../atoms/TextInput";
 import { RadioGroup } from "../../atoms/RadioGroup";
 import { CheckBoxGroup } from "../../atoms/CheckBoxGroup";
@@ -12,7 +12,7 @@ interface InitialValuesProps {
   email: string;
   name: string;
   discipline: Discipline | "";
-  areas: string[];
+  areas: Area[];
   interests: string[];
 }
 
@@ -21,7 +21,7 @@ export const AccountEdit: React.FC<AccountEditProps> = (props) => {
     email: "udit.desai3@gmail.com",
     name: "Udit Desai",
     discipline: "Computer",
-    areas: ["area5", "area6"],
+    areas: ["Analog and Digital Electronics", "Software"],
     interests: ["i1", "i2", "i3"],
   };
 
@@ -119,13 +119,20 @@ export const AccountEdit: React.FC<AccountEditProps> = (props) => {
           <CheckBoxGroup
             legend="Your ECE areas of study?"
             currentValues={formik.values.areas}
-            values={["area1", "area2", "area3", "area4", "area5", "area6"]}
+            values={[
+              "Photonics and Semiconductor Physics",
+              "Electromagnetics and Energy Systems",
+              "Analog and Digital Electronics",
+              "Control, Communications and Signal Processing",
+              "Computer Hardware & Computer Networks",
+              "Software",
+            ]}
             labels={[
-              "Area 1",
-              "Area 2",
-              "Area 3",
-              "Information Systems",
-              "Hardware",
+              "Photonics and Semiconductor Physics",
+              "Electromagnetics and Energy Systems",
+              "Analog and Digital Electronics",
+              "Control, Communications and Signal Processing",
+              "Computer Hardware & Computer Networks",
               "Software",
             ]}
             onChange={formik.handleChange}

@@ -5,12 +5,14 @@ import { AuthView } from "../components/auth/AuthView";
 import { SignUpStep1 } from "../components/auth/SignUpStep1";
 import { SignUpStep2 } from "../components/auth/SignUpStep2";
 import { SignUpStep3 } from "../components/auth/SignUpStep3";
-import { Discipline } from "../types";
+import { SignUpStep4 } from "../components/auth/SignUpStep4";
+import { Discipline, Area } from "../types";
 
 const stepNames: { [key: number]: string } = {
   0: "General information",
   1: "ECE information",
   2: "Interests",
+  3: "Confirmation",
 };
 
 const SignUp: NextPage = () => {
@@ -18,10 +20,11 @@ const SignUp: NextPage = () => {
   // step 0 => general info
   // step 1 => ECE info
   // step 2 => interests info
+  // step 3 => signup confirmation
   const [step, setStep] = useState(0);
 
   const nextStep = () => {
-    if (step !== 2) setStep((prev) => prev + 1);
+    if (step !== 3) setStep((prev) => prev + 1);
   };
 
   const prevStep = () => {
@@ -33,8 +36,8 @@ const SignUp: NextPage = () => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [discipline, setDiscipline] = useState<Discipline | "">("");
-  const [areas, setAreas] = useState<string[]>([]);
+  const [discipline, setDiscipline] = useState<Discipline>("Computer");
+  const [areas, setAreas] = useState<Area[]>([]);
   const [interests, setInterests] = useState<string[]>([]);
 
   // signup value handlers
@@ -43,9 +46,9 @@ const SignUp: NextPage = () => {
   const setSavedPassword = (password: string) => setPassword(password);
   const setSavedConfirmPassword = (confirmPassword: string) =>
     setConfirmPassword(confirmPassword);
-  const setSavedDiscipline = (discipline: Discipline | "") =>
+  const setSavedDiscipline = (discipline: Discipline) =>
     setDiscipline(discipline);
-  const setSavedAreas = (areas: string[]) => setAreas((prev) => [...areas]);
+  const setSavedAreas = (areas: Area[]) => setAreas((prev) => [...areas]);
   const setSavedInterests = (interests: string[]) =>
     setInterests((prev) => [...interests]);
 
@@ -93,6 +96,7 @@ const SignUp: NextPage = () => {
             setSavedInterests={setSavedInterests}
           />
         ) : null}
+        {step === 3 ? <SignUpStep4 email={email} password={password} /> : null}
         <p className="mt-8">
           Already have an account?{" "}
           <Link href="/signin">

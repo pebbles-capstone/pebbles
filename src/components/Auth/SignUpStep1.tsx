@@ -54,26 +54,11 @@ export const SignUpStep1: React.FC<SignUpStep1Props> = (props) => {
 
         return errors;
       }}
-      onSubmit={(values, { setErrors }) => {
-        const newErrors: { [key: string]: string } = {};
-        let isError = false;
-
-        if (values.password !== "password") {
-          isError = true;
-          newErrors.password = "There was an error in the server";
-        }
-
-        if (isError) {
-          setErrors(newErrors);
-          return;
-        }
-
+      onSubmit={(values) => {
         setSavedEmail(values.email);
         setSavedName(values.name);
         setSavedPassword(values.password);
         setSavedConfirmPassword(values.confirmPassword);
-
-        console.log(values);
         next();
       }}
     >

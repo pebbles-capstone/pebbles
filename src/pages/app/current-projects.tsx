@@ -4,15 +4,14 @@ import { ContentBox } from "../../components/app/ContentBox";
 import { PageTitle } from "../../components/app/PageTitle";
 import { TablePanel } from "../../components/app/TablePanel";
 import { PastProject } from "../../types";
+import { withAuth } from "../../contexts/Auth";
 
 interface MockUser {
   name: string;
   email: string;
 }
 
-interface AuthPage {
-  user: MockUser;
-}
+interface AuthPage {}
 
 const mockProject: PastProject = {
   title: "Project Name",
@@ -22,7 +21,7 @@ const mockProject: PastProject = {
     "An online platform allows sitters to offer babysitting/day-care services to parents. The sitters can list down their specific offers and parents can search for sitters that suit their specific needs.	",
 };
 
-const CurrentProjects: NextPage<AuthPage> = ({ user }) => {
+const CurrentProjects: NextPage<AuthPage> = () => {
   const like = () => {
     console.log("liked");
   };
@@ -32,7 +31,7 @@ const CurrentProjects: NextPage<AuthPage> = ({ user }) => {
   };
 
   return (
-    <AppView name={user.name} width="wide">
+    <AppView name={"udit desai"} width="wide">
       <PageTitle title="View all the current posted projects by supervisors already sorted based on what we think you'll like!" />
       <ContentBox
         title="How we sort"
@@ -59,21 +58,14 @@ const CurrentProjects: NextPage<AuthPage> = ({ user }) => {
 };
 
 export const getServerSideProps = async (context) => {
-  // boolean to control if someone is logged in or not atm
-  const loggedIn = true;
+  const user = await withAuth(context);
 
-  if (!loggedIn) {
+  if (!user) {
     return { redirect: { permanent: false, destination: "/signin" } };
   }
 
   return {
-    // will be passed to the page component as props
-    props: {
-      user: {
-        name: "Udit Desai",
-        email: "udit.desai3@gmail.com",
-      },
-    },
+    props: {}, // will be passed to the page component as props
   };
 };
 

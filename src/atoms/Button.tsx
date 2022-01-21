@@ -70,7 +70,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
         onClick={onClick}
         className={standardStyle}
         disabled={disabled}
-        type={type}
+        type={type ? type : "button"}
       >
         {text}
       </button>

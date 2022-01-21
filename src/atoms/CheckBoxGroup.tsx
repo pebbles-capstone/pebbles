@@ -36,7 +36,7 @@ export const CheckBoxGroup: React.FC<CheckBoxGroupProps> = (props) => {
   return (
     <fieldset className={wrapperStyle}>
       <legend className="inline-block mb-2">{legend}</legend>
-      <div className="flex flex-wrap max-w-sm -mt-3">
+      <div className="flex flex-wrap max-w-md -mt-3">
         {values.map((value, i) => {
           const label = labels[i];
 
@@ -61,6 +61,9 @@ export const CheckBoxGroup: React.FC<CheckBoxGroupProps> = (props) => {
           );
         })}
       </div>
+      {error ? (
+        <span className="text-red mt-2 inline-block">{error}</span>
+      ) : null}
     </fieldset>
   );
 };

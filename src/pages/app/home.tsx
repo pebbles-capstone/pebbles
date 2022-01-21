@@ -4,6 +4,7 @@ import { ContentBox } from "../../components/app/ContentBox";
 import { PageTitle } from "../../components/app/PageTitle";
 import { useAuth } from "../../contexts/Auth";
 import { useRouter } from "next/router";
+import { withAuth } from "../../contexts/Auth";
 
 interface AuthPage {}
 
@@ -55,16 +56,14 @@ const AppHome: NextPage<AuthPage> = () => {
 };
 
 export const getServerSideProps = async (context) => {
-  // boolean to control if someone is logged in or not atm
+  const user = await withAuth(context);
+
+  if (!user) {
+    return { redirect: { permanent: false, destination: "/signin" } };
+  }
 
   return {
-    // will be passed to the page component as props
-    props: {
-      user: {
-        name: "Udit Desai",
-        email: "udit.desai3@gmail.com",
-      },
-    },
+    props: {}, // will be passed to the page component as props
   };
 };
 
