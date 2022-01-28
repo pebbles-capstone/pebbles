@@ -3,13 +3,14 @@ import { AppView } from "../../components/app/AppView";
 import { ContentBox } from "../../components/app/ContentBox";
 import { PageTitle } from "../../components/app/PageTitle";
 import { withAuth } from "../../contexts/Auth";
+import { AuthPage } from "../../types";
 
-interface AuthPage {}
-
-const AppHome: NextPage<AuthPage> = () => {
+const AppHome: NextPage<AuthPage> = ({ user }) => {
   return (
-    <AppView name={"Udit Desai"} width="standard">
-      <PageTitle title="Good morning Udit, check out your progress below." />
+    <AppView name={user.name} width="standard">
+      <PageTitle
+        title={`Good morning ${user.name}, check out your progress below.`}
+      />
       <ContentBox
         title="Start rating past projects"
         description="By liking/disliking past projects, we can determine what types of projects interest you and can help suggest teammates who have similar interests and likings."
@@ -61,7 +62,9 @@ export const getServerSideProps = async (context: any) => {
   }
 
   return {
-    props: {}, // will be passed to the page component as props
+    props: {
+      user: user,
+    }, // will be passed to the page component as props
   };
 };
 

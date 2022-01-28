@@ -27,3 +27,7 @@ export interface User {
   name: string;
   data: UserData;
 }
+
+export interface AuthPage {
+  user: User;
+}

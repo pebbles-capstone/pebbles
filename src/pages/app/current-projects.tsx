@@ -5,13 +5,7 @@ import { PageTitle } from "../../components/app/PageTitle";
 import { TablePanel } from "../../components/app/TablePanel";
 import { PastProject } from "../../types";
 import { withAuth } from "../../contexts/Auth";
-
-interface MockUser {
-  name: string;
-  email: string;
-}
-
-interface AuthPage {}
+import { AuthPage } from "../../types";
 
 const mockProject: PastProject = {
   title: "Project Name",
@@ -21,7 +15,7 @@ const mockProject: PastProject = {
     "An online platform allows sitters to offer babysitting/day-care services to parents. The sitters can list down their specific offers and parents can search for sitters that suit their specific needs.	",
 };
 
-const CurrentProjects: NextPage<AuthPage> = () => {
+const CurrentProjects: NextPage<AuthPage> = ({ user }) => {
   const like = () => {
     console.log("liked");
   };
@@ -31,7 +25,7 @@ const CurrentProjects: NextPage<AuthPage> = () => {
   };
 
   return (
-    <AppView name={"udit desai"} width="wide">
+    <AppView name={user.name} width="wide">
       <PageTitle title="View all the current posted projects by supervisors already sorted based on what we think you'll like!" />
       <ContentBox
         title="How we sort"
@@ -65,7 +59,9 @@ export const getServerSideProps = async (context: any) => {
   }
 
   return {
-    props: {}, // will be passed to the page component as props
+    props: {
+      user: user,
+    }, // will be passed to the page component as props
   };
 };
 

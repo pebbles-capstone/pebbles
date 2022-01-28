@@ -6,10 +6,17 @@ import { Button } from "../atoms/Button";
 import { TextInput } from "../atoms/TextInput";
 import { useAuth } from "../contexts/Auth";
 import { useRouter } from "next/router";
+import { useState } from "react";
 
 const SignIn: NextPage = () => {
   const { signInUser } = useAuth();
   const router = useRouter();
+
+  const [viewPassword, setViewPassword] = useState(false);
+
+  const toggleViewPassword = () => {
+    setViewPassword((prev) => !prev);
+  };
 
   return (
     <AuthView>
@@ -49,7 +56,7 @@ const SignIn: NextPage = () => {
                 error={errors.email}
               />
               <TextInput
-                type="password"
+                type={viewPassword ? "text" : "password"}
                 name="password"
                 onChange={handleChange}
                 value={values.password}
@@ -58,6 +65,8 @@ const SignIn: NextPage = () => {
                 id="signInPassword"
                 wrapperClassName="mb-4"
                 error={errors.password}
+                rightIcon={true}
+                iconAction={toggleViewPassword}
               />
               {!!status && <p className="text-red mb-6">{status}</p>}
               <Button
@@ -81,7 +90,7 @@ const SignIn: NextPage = () => {
         </p>
         <p className="mt-1">
           Forgot your password?{" "}
-          <Link href="/signup">
+          <Link href="/resetpassword">
             <a className="text-blue-dark">Reset password.</a>
           </Link>
         </p>

@@ -2,31 +2,21 @@ import { useState } from "react";
 import { Formik } from "formik";
 import { Button } from "../../atoms/Button";
 import { TextInput } from "../../atoms/TextInput";
+import { useAuth } from "../../contexts/Auth";
+import { useRouter } from "next/router";
 
-interface SignUpStep1Props {
-  next: () => void;
+interface ResetPasswordStep2Props {
   email: string;
-  name: string;
-  password: string;
-  confirmPassword: string;
-  setSavedEmail: (arg0: string) => void;
-  setSavedName: (arg0: string) => void;
-  setSavedPassword: (arg0: string) => void;
-  setSavedConfirmPassword: (arg0: string) => void;
 }
 
-export const SignUpStep1: React.FC<SignUpStep1Props> = (props) => {
-  const {
-    next,
-    email,
-    name,
-    password,
-    confirmPassword,
-    setSavedEmail,
-    setSavedName,
-    setSavedPassword,
-    setSavedConfirmPassword,
-  } = props;
+export const ResetPasswordStep2: React.FC<ResetPasswordStep2Props> = (
+  props
+) => {
+  const { email } = props;
+
+  const { confirmResetPassword } = useAuth();
+
+  const [isError, setIsError] = useState(false);
 
   const [viewPassword, setViewPassword] = useState(false);
   const [viewConfirmPassword, setViewConfirmPassword] = useState(false);
@@ -42,17 +32,15 @@ export const SignUpStep1: React.FC<SignUpStep1Props> = (props) => {
   return (
     <Formik
       initialValues={{
-        email: email,
-        name: name,
-        password: password,
-        confirmPassword: confirmPassword,
+        code: "",
+        password: "",
+        confirmPassword: "",
       }}
       validateOnChange={false}
       validate={(values) => {
         const errors: { [key: string]: string } = {};
 
-        if (!values.email) errors.email = "Email is required";
-        if (!values.name) errors.name = "Name is required";
+        if (!values.code) errors.name = "Code is required";
         if (!values.password) errors.password = "Password is required";
         if (!values.confirmPassword)
           errors.confirmPassword = "Reentering password is required";
@@ -66,37 +54,36 @@ export const SignUpStep1: React.FC<SignUpStep1Props> = (props) => {
 
         return errors;
       }}
-      onSubmit={(values) => {
-        setSavedEmail(values.email);
-        setSavedName(values.name);
-        setSavedPassword(values.password);
-        setSavedConfirmPassword(values.confirmPassword);
-        next();
+      onSubmit={async (values, { setStatus }) => {
+        try {
+          const result = await confirmResetPassword(
+            email,
+            values.password,
+            values.code
+          );
+          if (result) {
+            setIsError(false);
+            setStatus("Your password has been changed!");
+          }
+        } catch (err: any) {
+          console.log(err);
+          setIsError(true);
+          setStatus(err.message);
+        }
       }}
     >
-      {({ values, errors, handleChange, handleSubmit }) => (
+      {({ values, errors, status, handleChange, handleSubmit }) => (
         <form onSubmit={handleSubmit} className="flex flex-col">
           <TextInput
-            type="email"
-            name="email"
-            onChange={handleChange}
-            value={values.email}
-            placeholder="Enter your email"
-            label="Email address"
-            id="signUpEmail"
-            wrapperClassName="mb-4"
-            error={errors.email}
-          />
-          <TextInput
             type="text"
-            name="name"
+            name="code"
             onChange={handleChange}
-            value={values.name}
-            placeholder="Enter your full name"
-            label="Full name"
-            id="signUpName"
+            value={values.code}
+            placeholder="Enter the code sent to your email"
+            label="Code"
+            id="resetPasswordCode"
             wrapperClassName="mb-4"
-            error={errors.email}
+            error={errors.code}
           />
           <TextInput
             type={viewPassword ? "text" : "password"}
@@ -124,19 +111,23 @@ export const SignUpStep1: React.FC<SignUpStep1Props> = (props) => {
             rightIcon={true}
             iconAction={toggleViewConfirmPassword}
           />
+          {!!status && (
+            <p className={`${isError ? "text-red" : "text-black"} mb-6`}>
+              {status}
+            </p>
+          )}
           <Button
             size="sm"
-            text="Next"
+            text="Reset Password"
             ariaLabel="Next step"
             isLink={false}
             isInternal={false}
             style="border-primary"
             type="submit"
             disabled={
-              values.email === "" ||
+              values.code === "" ||
               values.password === "" ||
-              values.confirmPassword === "" ||
-              values.name === ""
+              values.confirmPassword === ""
             }
           />
         </form>

@@ -2,17 +2,11 @@ import type { NextPage } from "next";
 import { AppView } from "../../components/app/AppView";
 import { PageTitle } from "../../components/app/PageTitle";
 import { withAuth } from "../../contexts/Auth";
+import { AuthPage } from "../../types";
 
-interface MockUser {
-  name: string;
-  email: string;
-}
-
-interface AuthPage {}
-
-const Team: NextPage<AuthPage> = () => {
+const Team: NextPage<AuthPage> = ({ user }) => {
   return (
-    <AppView name={"udit desai"} width="standard">
+    <AppView name={user.name} width="standard">
       <PageTitle title="Your Team" />
     </AppView>
   );
@@ -26,7 +20,9 @@ export const getServerSideProps = async (context: any) => {
   }
 
   return {
-    props: {}, // will be passed to the page component as props
+    props: {
+      user: user,
+    }, // will be passed to the page component as props
   };
 };
 

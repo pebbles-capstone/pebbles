@@ -1,3 +1,6 @@
+import { Icon } from "./Icon";
+import { IconButton } from "./IconButton";
+
 interface TextInputProps {
   label?: string;
   id: string;
@@ -9,6 +12,8 @@ interface TextInputProps {
   value: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder: string;
+  rightIcon?: boolean;
+  iconAction?: () => void;
 }
 
 export const TextInput: React.FC<TextInputProps> = (props) => {
@@ -23,6 +28,8 @@ export const TextInput: React.FC<TextInputProps> = (props) => {
     name,
     error,
     placeholder,
+    rightIcon,
+    iconAction,
   } = props;
 
   const wrapperStyle = `
@@ -43,15 +50,28 @@ export const TextInput: React.FC<TextInputProps> = (props) => {
           {label}
         </label>
       ) : null}
-      <input
-        placeholder={placeholder}
-        type={type}
-        name={name}
-        value={value}
-        onChange={onChange}
-        className={inputStyle}
-        id={id}
-      />
+      <div className="w-full h-fit-content flex items-center relative">
+        <input
+          placeholder={placeholder}
+          type={type}
+          name={name}
+          value={value}
+          onChange={onChange}
+          className={inputStyle}
+          id={id}
+        />
+        {rightIcon ? (
+          <IconButton
+            icon="eye"
+            isLink={false}
+            isInternal={false}
+            onClick={iconAction}
+            ariaLabel="View password"
+            size="small"
+            className="absolute right-2"
+          />
+        ) : null}
+      </div>
       {error ? (
         <span className="text-red mt-1 inline-block">{error}</span>
       ) : null}

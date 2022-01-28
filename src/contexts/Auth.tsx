@@ -22,6 +22,12 @@ type AuthContext = {
     password: string,
     code: string
   ) => Promise<CognitoUser | null>;
+  resetPassword: (email: string) => Promise<boolean>;
+  confirmResetPassword: (
+    email: string,
+    password: string,
+    code: string
+  ) => Promise<boolean>;
   signInUser: (email: string, password: string) => Promise<CognitoUser | null>;
   signOutUser: () => Promise<boolean>;
   loadingUser: boolean;
@@ -38,12 +44,23 @@ const defaultUserValue = null;
  */
 export const withAuth = async (
   context: GetServerSidePropsContext
-): Promise<CognitoUser | null> => {
+): Promise<User | null> => {
   const SSR = withSSRContext(context);
   try {
     const user = await SSR.Auth.currentAuthenticatedUser();
-    if (user) return user;
-    else return defaultUserValue;
+    const details = await SSR.Auth.currentUserInfo();
+    if (user && details) {
+      return {
+        id: details.id,
+        email: details.attributes.email,
+        name: details.attributes.email,
+        data: {
+          discipline: "Computer",
+          areas: [],
+          interests: [],
+        },
+      };
+    } else return defaultUserValue;
   } catch (err) {
     console.log("user not logged in", err);
     return defaultUserValue;
@@ -105,6 +122,30 @@ export const AuthProvider: React.FC = ({ children }) => {
     }
   };
 
+  const resetPassword: AuthContext["resetPassword"] = async (email) => {
+    const result = await Auth.forgotPassword(email);
+    if (result) {
+      console.log(result);
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const confirmResetPassword: AuthContext["confirmResetPassword"] = async (
+    email,
+    password,
+    code
+  ) => {
+    const result = await Auth.forgotPasswordSubmit(email, code, password);
+    if (result) {
+      console.log(result);
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   const signInUser: AuthContext["signInUser"] = async (email, password) => {
     setLoadingUser(true);
     const user = await Auth.signIn(email, password);
@@ -146,6 +187,8 @@ export const AuthProvider: React.FC = ({ children }) => {
         checkIfUserLoggedIn,
         signInUser,
         signUpUser,
+        resetPassword,
+        confirmResetPassword,
         confirmSignUpUser,
         signOutUser,
       }}

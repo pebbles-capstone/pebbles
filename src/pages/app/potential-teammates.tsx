@@ -3,17 +3,11 @@ import { AppView } from "../../components/app/AppView";
 import { ContentBox } from "../../components/app/ContentBox";
 import { PageTitle } from "../../components/app/PageTitle";
 import { withAuth } from "../../contexts/Auth";
+import { AuthPage } from "../../types";
 
-interface MockUser {
-  name: string;
-  email: string;
-}
-
-interface AuthPage {}
-
-const PotentialTeammates: NextPage<AuthPage> = () => {
+const PotentialTeammates: NextPage<AuthPage> = ({ user }) => {
   return (
-    <AppView name={"udit desai"} width="wide">
+    <AppView name={user.name} width="wide">
       <PageTitle title="Based on your project likings and everyone elses’, we suggest teaming with any of the following students!" />
     </AppView>
   );
@@ -27,7 +21,9 @@ export const getServerSideProps = async (context: any) => {
   }
 
   return {
-    props: {}, // will be passed to the page component as props
+    props: {
+      user: user,
+    }, // will be passed to the page component as props
   };
 };
 
