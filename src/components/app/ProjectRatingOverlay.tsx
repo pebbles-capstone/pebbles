@@ -31,7 +31,7 @@ export const ProjectRatingOverlay: React.FC<ProjectRatingOverlayProps> = (
     nextProject();
   };
 
-  const finishRating = (e) => {
+  const finishRating = (e: any) => {
     e.stopPropagation();
     console.log("finish rating");
     toggleIsShown();

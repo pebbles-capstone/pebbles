@@ -13,7 +13,7 @@ export const ProjectPanel: React.FC<ProjectPanelProps> = (props) => {
   const { project, like, dislike, isPreview, previewClick } = props;
   const { title, supervisor, numOfStudents, description } = project;
 
-  const preventDefault = (e) => {
+  const preventDefault = (e: any) => {
     e.preventDefault();
     e.stopPropagation();
   };

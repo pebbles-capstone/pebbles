@@ -5,7 +5,7 @@ interface ButtonProps {
   ariaLabel: string;
   isLink: boolean;
   isInternal: boolean;
-  onClick?: () => void;
+  onClick?: (e?: any) => void;
   disabled?: boolean;
   link?: string;
   size: "sm" | "md" | "lg";
