@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { NextPage } from "next";
 import { AppView } from "../../components/app/AppView";
 import { ContentBox } from "../../components/app/ContentBox";
@@ -6,6 +7,7 @@ import { ProjectPanel } from "../../components/app/ProjectPanel";
 import { PastProject } from "../../types";
 import { withAuth } from "../../contexts/Auth";
 import { AuthPage } from "../../types";
+import { ProjectRatingOverlay } from "../../components/app/ProjectRatingOverlay";
 
 const mockProject: PastProject = {
   title: "Project Name",
@@ -15,19 +17,34 @@ const mockProject: PastProject = {
     "An online platform allows sitters to offer babysitting/day-care services to parents. The sitters can list down their specific offers and parents can search for sitters that suit their specific needs.",
 };
 
-const PastProjects: NextPage<AuthPage> = ({ user }) => {
-  const like = () => {
-    console.log("liked");
-  };
+const mockProjec2: PastProject = {
+  title: "Project Name 2",
+  supervisor: "Supervisor Name 2",
+  numOfStudents: 3,
+  description:
+    "An online platform allows sitters to offer babysitting/day-care services to parents. The sitters can list down their specific offers and parents can search for sitters that suit their specific needs.",
+};
 
-  const dislike = () => {
-    console.log("disliked");
+const PastProjects: NextPage<AuthPage> = ({ user }) => {
+  const [projectRatingVisible, setProjectRatingVisible] = useState(false);
+
+  const toggleProjectRating = () => {
+    setProjectRatingVisible((prev) => !prev);
   };
 
   return (
     <AppView name={user.name} width="standard">
+      <ProjectRatingOverlay
+        projects={[mockProject, mockProjec2]}
+        isShown={projectRatingVisible}
+        toggleIsShown={toggleProjectRating}
+      />
       <PageTitle title="Like/dislike a project so we can understand what you’re interested in and match you with others!" />
-      <ProjectPanel project={mockProject} like={like} dislike={dislike} />
+      <ProjectPanel
+        project={mockProject}
+        isPreview={true}
+        previewClick={toggleProjectRating}
+      />
       <ContentBox title="Project Rating Progress">
         <div className="flex flex-col">
           <p>You&apos;ve rated</p>
