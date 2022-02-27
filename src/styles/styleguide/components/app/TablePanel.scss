@@ -20,3 +20,17 @@
     grid-template-columns: 0.5fr 1.5fr 1fr 45%;
   }
 }
+
+.SupervisorsTable {
+  display: grid;
+  grid-template-columns: 0.4fr 0.8fr 1fr 40%;
+
+  @media (min-width: 1400px) {
+    grid-template-columns: 0.3fr 0.8fr 1fr 40%;
+  }
+}
+
+.PotentialTeammatesTable {
+  display: grid;
+  grid-template-columns: 1fr 40% 40%;
+}

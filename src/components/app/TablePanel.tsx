@@ -41,23 +41,35 @@ export const TablePanel: React.FC<TablePanelProps> = (props) => {
         onClick={closeDetailedView}
       >
         {rowInDetail && (
-          <ContentBox title={rowInDetail[1]} className="max-w-2xl">
+          <ContentBox
+            title={rowInDetail[1]}
+            className="max-w-2xl max-h-80vh overflow-y-auto"
+          >
             <p className="mb-4">
               <span className="text-grey-darker">Rank: </span>
               {rowInDetail[0]}
             </p>
-            <p className="mb-4">
-              <span className="text-grey-darker">Supervisor: </span>
-              {rowInDetail[2]}
-            </p>
-            <p className="text-grey-darker">Description:</p>
-            <p>{rowInDetail[3]}</p>
+            {columns.map((item, i) => {
+              if (item !== "Title" && item !== "Name") {
+                return (
+                  <p
+                    className="mb-4 flex flex-col"
+                    key={`detailedView-${item}-${i}`}
+                  >
+                    <span className="text-grey-darker">{item}: </span>
+                    {rowInDetail[i + 1]}
+                  </p>
+                );
+              } else {
+                return null;
+              }
+            })}
           </ContentBox>
         )}
         <Button
-          text="Return to all projects"
+          text="Return to all"
           size="sm"
-          ariaLabel="Close modal and return to all projects"
+          ariaLabel="Close modal and return"
           isLink={false}
           isInternal={false}
           onClick={closeDetailedView}

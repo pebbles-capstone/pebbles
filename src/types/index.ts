@@ -11,6 +11,11 @@ export interface CurrentProject {
   description: string;
 }
 
+export interface OtherUser {
+  name: string;
+  email: string;
+}
+
 export type Discipline = "Computer" | "Electrical";
 
 export type Area =
