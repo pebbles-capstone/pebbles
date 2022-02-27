@@ -5,6 +5,12 @@ export interface PastProject {
   description: string;
 }
 
+export interface CurrentProject {
+  title: string;
+  supervisor: string;
+  description: string;
+}
+
 export type Discipline = "Computer" | "Electrical";
 
 export type Area =

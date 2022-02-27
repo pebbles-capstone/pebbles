@@ -17,7 +17,7 @@ const mockProject: PastProject = {
     "An online platform allows sitters to offer babysitting/day-care services to parents. The sitters can list down their specific offers and parents can search for sitters that suit their specific needs.",
 };
 
-const mockProjec2: PastProject = {
+const mockProject2: PastProject = {
   title: "Project Name 2",
   supervisor: "Supervisor Name 2",
   numOfStudents: 3,
@@ -35,7 +35,7 @@ const PastProjects: NextPage<AuthPage> = ({ user }) => {
   return (
     <AppView name={user.name} width="standard">
       <ProjectRatingOverlay
-        projects={[mockProject, mockProjec2]}
+        projects={[mockProject, mockProject2]}
         isShown={projectRatingVisible}
         toggleIsShown={toggleProjectRating}
       />

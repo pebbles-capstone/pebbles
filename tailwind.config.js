@@ -37,6 +37,10 @@ module.exports = {
       transparent: "transparent",
       white: "#fff",
       black: "#000",
+      slate: {
+        DEFAULT: "#f8fafc",
+        dark: "#f1f5f9",
+      },
       grey: {
         DEFAULT: "#c4c4c4",
         light: "#f1f1f1",
@@ -66,10 +70,15 @@ module.exports = {
       height: {
         "fit-content": "fit-content",
       },
+      minWidth: {
+        "45rem": "45rem",
+      },
     },
   },
   variants: {
-    extend: {},
+    extend: {
+      backgroundColor: ["odd", "even"],
+    },
   },
   plugins: [],
 };

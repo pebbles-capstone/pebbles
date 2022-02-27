@@ -1,0 +1,22 @@
+.TablePanel {
+  div {
+    padding-right: 2rem;
+  }
+
+  div:first-child {
+    padding-left: 1rem;
+  }
+
+  div:last-child {
+    padding-right: 0;
+  }
+}
+
+.ProjectsTable {
+  display: grid;
+  grid-template-columns: 0.75fr 1.5fr 1fr 45%;
+
+  @media (min-width: 1400px) {
+    grid-template-columns: 0.5fr 1.5fr 1fr 45%;
+  }
+}

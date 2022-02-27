@@ -228,9 +228,9 @@ export const Menu: React.FC<MenuProps> = ({ name }) => {
         className={`${isOpen ? "flex" : "hidden"} flex-col justify-end sm:flex`}
       >
         <Link href="/app/account">
-          <a className="flex items-center">
+          <a className="flex flex-col">
             <Avatar name={name} />
-            <p className="text-md font-medium ml-2">{name}</p>
+            <p className="text-md font-medium mt-2">{name}</p>
           </a>
         </Link>
         <Button

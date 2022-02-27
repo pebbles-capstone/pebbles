@@ -191,6 +191,7 @@ export const AccountEdit: React.FC<AccountEditProps> = (props) => {
             ariaLabel="Reset password"
             size="md"
             style="blank"
+            className="underline"
           />
           <h3 className="text-base font-medium mt-6 mb-1">Discipline</h3>
           <p className="mb-4">Computer</p>

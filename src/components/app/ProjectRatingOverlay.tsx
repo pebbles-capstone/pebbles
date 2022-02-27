@@ -41,7 +41,7 @@ export const ProjectRatingOverlay: React.FC<ProjectRatingOverlayProps> = (
 
   return (
     <div
-      className="w-screen h-screen bg-black bg-opacity-90 z-50 fixed top-0 left-0 flex flex-col justify-center items-center p-6"
+      className="w-screen h-screen bg-black bg-opacity-80 z-50 fixed top-0 left-0 flex flex-col justify-center items-center p-6"
       onClick={toggleIsShown}
     >
       <ProjectPanel

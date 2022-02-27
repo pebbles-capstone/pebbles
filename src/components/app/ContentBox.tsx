@@ -10,6 +10,7 @@ interface ContentBoxProps {
   buttonOnClick?: () => void;
   buttonLink?: string;
   children?: React.ReactNode;
+  className?: string;
 }
 
 export const ContentBox: React.FC<ContentBoxProps> = (props) => {
@@ -23,6 +24,7 @@ export const ContentBox: React.FC<ContentBoxProps> = (props) => {
     buttonLink,
     children,
     hasButton,
+    className = "",
   } = props;
 
   let text: string;
@@ -53,7 +55,9 @@ export const ContentBox: React.FC<ContentBoxProps> = (props) => {
   }
 
   return (
-    <div className="w-full p-6 flex flex-col bg-white rounded-md shadow-md">
+    <div
+      className={`w-full p-6 flex flex-col bg-white rounded-md shadow-md ${className}`}
+    >
       <h2 className="text-md font-medium mb-4 max-w-3xl">{title}</h2>
       {description ? (
         <p

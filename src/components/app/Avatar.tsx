@@ -8,8 +8,8 @@ export const Avatar: React.FC<AvatarProps> = ({ name }) => {
   const letters = namePartLetters.join("");
 
   return (
-    <div className="h-8 w-8 rounded-full bg-blue-dark flex justify-center items-center">
-      <span className="text-white leading-relaxed">{letters}</span>
+    <div className="h-12 w-12 rounded-full bg-blue-dark flex justify-center items-center flex-shrink-0">
+      <span className="text-white leading-relaxed text-lg">{letters}</span>
     </div>
   );
 };
