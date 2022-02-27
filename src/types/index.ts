@@ -16,6 +16,12 @@ export interface OtherUser {
   email: string;
 }
 
+export interface Supervisor {
+  name: string;
+  email: string;
+  interests: string;
+}
+
 export type Discipline = "Computer" | "Electrical";
 
 export type Area =
