@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { Auth } from "aws-amplify";
+import { User } from '../types';
+import { dtoFromUser, UserDTO } from '../types/api';
 
 const BASE_AWS_URL = "https://762h15kldb.execute-api.ca-central-1.amazonaws.com/dev";
 
@@ -44,6 +46,81 @@ class Service {
       if(res?.status != 200) throw Error("Response failed");
 
       return res_data;
+    } catch (e) {
+      //TODO replace with proper Error class
+      console.log(e);
+      return e;
+    }
+  }
+
+  public async getRecs(userID: Number) {
+    try {
+      const jwtToken = await this.getJWT();
+      const data = {
+        headers: { Authorization: "Bearer " + jwtToken },
+      };
+      const projectsURl = this.baseURL + `/recs/${userID}`;
+
+      axios.defaults.headers.common["Authorization"] = "Bearer " + jwtToken;
+      const res = await axios.get(projectsURl, data);
+      console.log(res);
+      const res_data = JSON.parse(res?.data?.body);
+      
+      if(res?.status != 200) throw Error("Response failed");
+
+      return res_data?.recs;
+    } catch (e) {
+      //TODO replace with proper Error class
+      console.log(e);
+      return e;
+    }
+  }
+
+  public async getUser(userID: Number) {
+    try {
+      const jwtToken = await this.getJWT();
+      const data = {
+        headers: { Authorization: "Bearer " + jwtToken },
+      };
+      const projectsURl = this.baseURL + `/user/${userID}`;
+
+      axios.defaults.headers.common["Authorization"] = "Bearer " + jwtToken;
+      const res = await axios.get(projectsURl, data);
+      console.log(res);
+      const res_data = JSON.parse(res?.data?.body);
+      
+      if(res?.status != 200) throw Error("Response failed");
+
+      return res_data;
+    } catch (e) {
+      //TODO replace with proper Error class
+      console.log(e);
+      return e;
+    }
+  }
+
+  public async postUser(userID: Number, user: User) {
+    try {
+      const jwtToken = await this.getJWT();
+      const userData: UserDTO = dtoFromUser(user);
+      const data = {
+        headers: { Authorization: "Bearer " + jwtToken },
+        body: {
+          user: {
+            ...userData
+          }
+        }
+      };
+      const projectsURl = this.baseURL + `/user/${userID}`;
+
+      axios.defaults.headers.common["Authorization"] = "Bearer " + jwtToken;
+      const res = await axios.post(projectsURl, data);
+      console.log(res);
+      const res_data = JSON.parse(res?.data?.body);
+      
+      if(res?.status != 200) throw Error("Response failed");
+
+      return res_data?.recs;
     } catch (e) {
       //TODO replace with proper Error class
       console.log(e);
