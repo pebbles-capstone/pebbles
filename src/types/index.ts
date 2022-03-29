@@ -3,6 +3,7 @@ export interface PastProject {
   supervisor: string;
   numOfStudents: number;
   description: string;
+  interests?: number[];
 }
 
 export interface CurrentProject {
@@ -35,7 +36,7 @@ export type Area =
 export interface UserData {
   discipline: Discipline,
   areas: Area[],
-  interests: string[]
+  interests: number[]
 }
 
 export interface User {

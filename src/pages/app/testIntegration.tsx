@@ -5,6 +5,7 @@ import { AuthPage } from "../../types";
 import api from "../../lib/api";
 import { useState } from "react";
 import { User } from "../../types";
+import PastProjects from "./past-projects";
 
 const TestIntegration: NextPage<AuthPage> = ({ user }) => {
     const [data, setData] = useState([]);
@@ -14,7 +15,7 @@ const TestIntegration: NextPage<AuthPage> = ({ user }) => {
     const getProj = async() => {
         const proj = await api.getProjects();
         console.log(proj);
-        setData(proj);
+        setData(proj as never[]);
         return proj;
     }
 
@@ -33,7 +34,7 @@ const TestIntegration: NextPage<AuthPage> = ({ user }) => {
         data: {
             discipline: "Computer",
             areas: ["Analog and Digital Electronics", "Software"],
-            interests: ["1","290"],
+            interests: [1,290],
         }
       }
       const res = await api.postUser(900, user);
@@ -41,10 +42,10 @@ const TestIntegration: NextPage<AuthPage> = ({ user }) => {
     }
 
     const getUser = async() => {
-      const res = await api.getUser(99);
+      const res = await api.getUser(299299);
       console.log([res]);
       const array_res = [res];
-      setData2(res);
+      setData2(array_res as never[]);
     }
   return (
     <div style={{textAlign: "center"}}>
