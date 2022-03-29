@@ -182,7 +182,8 @@ export const AuthProvider: React.FC = ({ children }) => {
           data: {
             discipline: userData.data.discipline,
             areas: userData.data.areas,
-            interests: [0, 0, 0, 0, 0, 0],
+            interests: userData.data.interests,
+            interestVector: [0, 0, 0, 0, 0, 0],
           },
         };
         const newBackendUser = await api.postUser(
