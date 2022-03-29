@@ -36,7 +36,8 @@ export type Area =
 export interface UserData {
   discipline: Discipline,
   areas: Area[],
-  interests: number[]
+  interests: string[],
+  interestVector?: number[]
 }
 
 export interface User {

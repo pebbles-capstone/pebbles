@@ -39,7 +39,8 @@ export const userFromDto = (user: UserDTO): User => ({
     data: {
         discipline: user?.discipline as Discipline,
         areas: user?.area as Area[],
-        interests: user?.interests,
+        interestVector: user?.interests,
+        interests: [""],
     }
   });
 
@@ -49,7 +50,7 @@ export const userFromDto = (user: UserDTO): User => ({
     contact: user?.email,
     discipline: user?.data?.discipline as string,
     area: user?.data?.areas as string[],
-    interests: user?.data?.interests as number[],
+    interests: user?.data?.interestVector!,
     name: user?.name,
     teamID: "-1",
   });

@@ -34,7 +34,8 @@ const TestIntegration: NextPage<AuthPage> = ({ user }) => {
         data: {
             discipline: "Computer",
             areas: ["Analog and Digital Electronics", "Software"],
-            interests: [1,290],
+            interestVector: [1,290],
+            interests: [""],
         }
       }
       const res = await api.postUser(900, user);
