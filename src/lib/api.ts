@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Auth } from "aws-amplify";
-import { User } from '../types';
-import { dtoFromUser, UserDTO } from '../types/api';
+import { PastProject, User } from '../types';
+import { dtoFromUser, oldProjFromDto, ProjectDTO, UserDTO } from '../types/api';
 
 const BASE_AWS_URL = "https://762h15kldb.execute-api.ca-central-1.amazonaws.com/dev";
 
@@ -41,11 +41,13 @@ class Service {
 
       axios.defaults.headers.common["Authorization"] = "Bearer " + jwtToken;
       const res = await axios.get(projectsURl, data);
-      const res_data = JSON.parse(res?.data?.body);
+      const res_data: ProjectDTO[] = JSON.parse(res?.data?.body);
+      console.log(res_data);
+      const proj: PastProject[] = res_data?.map(oldProjFromDto);
       
       if(res?.status != 200) throw Error("Response failed");
 
-      return res_data;
+      return proj;
     } catch (e) {
       //TODO replace with proper Error class
       console.log(e);
