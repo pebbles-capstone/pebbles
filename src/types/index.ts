@@ -37,7 +37,8 @@ export interface UserData {
   discipline: Discipline,
   areas: Area[],
   interests: string[],
-  interestVector?: number[]
+  interestVector?: number[],
+  projectCount?: number,
 }
 
 export interface User {

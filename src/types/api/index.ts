@@ -8,6 +8,7 @@ export interface UserDTO {
     interests: number[],
     name: string,
     teamID: string,
+    projectCount: number,
 }
 
 export interface ProjectDTO {
@@ -41,6 +42,7 @@ export const userFromDto = (user: UserDTO): User => ({
         areas: user?.area as Area[],
         interestVector: user?.interests,
         interests: [""],
+        projectCount: user?.projectCount || 0,
     }
   });
 
@@ -53,4 +55,5 @@ export const userFromDto = (user: UserDTO): User => ({
     interests: user?.data?.interestVector!,
     name: user?.name,
     teamID: "-1",
+    projectCount: user?.data?.projectCount!,
   });
