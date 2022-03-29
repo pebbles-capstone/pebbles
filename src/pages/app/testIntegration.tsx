@@ -43,7 +43,8 @@ const TestIntegration: NextPage<AuthPage> = ({ user }) => {
     const getUser = async() => {
       const res = await api.getUser(99);
       console.log([res]);
-      setData2([res]);
+      const array_res = [res];
+      setData2(res);
     }
   return (
     <div style={{textAlign: "center"}}>
