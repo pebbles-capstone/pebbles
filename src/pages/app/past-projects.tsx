@@ -11,22 +11,6 @@ import { AuthPage } from "../../types";
 import { ProjectRatingOverlay } from "../../components/app/ProjectRatingOverlay";
 import api from "../../lib/api";
 
-const mockProject: PastProject = {
-  title: "Project Name",
-  supervisor: "Supervisor Name",
-  numOfStudents: 4,
-  description:
-    "An online platform allows sitters to offer babysitting/day-care services to parents. The sitters can list down their specific offers and parents can search for sitters that suit their specific needs.",
-};
-
-const mockProject2: PastProject = {
-  title: "Project Name 2",
-  supervisor: "Supervisor Name 2",
-  numOfStudents: 3,
-  description:
-    "An online platform allows sitters to offer babysitting/day-care services to parents. The sitters can list down their specific offers and parents can search for sitters that suit their specific needs.",
-};
-
 const PastProjects: NextPage<AuthPage> = ({ user }) => {
   const { user: currentUser } = useAuth();
   const [projectRatingVisible, setProjectRatingVisible] = useState(false);
@@ -58,37 +42,45 @@ const PastProjects: NextPage<AuthPage> = ({ user }) => {
   }, [currentUser]);
 
   return (
-    <AppView name={user.name} width="standard">
-      {!loadingProjects && (
-        <ProjectRatingOverlay
-          projects={pastProjects}
-          isShown={projectRatingVisible}
-          toggleIsShown={toggleProjectRating}
-        />
-      )}
-      <PageTitle title="Like/dislike a project so we can understand what you’re interested in and match you with others!" />
-      {!loadingProjects && !loadingUser && (
-        <ProjectPanel
-          project={pastProjects[currentUser?.data.projectCount as number]}
-          isPreview={true}
-          previewClick={toggleProjectRating}
-        />
-      )}
-      {!loadingProjects && !loadingUser && (
-        <ContentBox title="Project Rating Progress">
-          <div className="flex flex-col">
-            <p>You&apos;ve rated</p>
-            <p className="text-xxxl">
-              {currentUser?.data.projectCount}/{pastProjects.length}
-            </p>
-            <p>past projects so far,</p>
-            <p className="mt-4">
-              We reccomend rating atleast 20 past projects to get accurate
-              teammate suggestions. However, the more you can do, the better!
-            </p>
-          </div>
-        </ContentBox>
-      )}
+    <AppView name={currentUser?.name!} width="standard">
+      {!loadingProjects && !loadingUser ? (
+        <>
+          {projectCount !== pastProjects.length - 1 ? (
+            <>
+              <ProjectRatingOverlay
+                projects={pastProjects}
+                isShown={projectRatingVisible}
+                toggleIsShown={toggleProjectRating}
+                projectsRatedSoFar={projectCount}
+              />
+              <PageTitle title="Like/dislike a project so we can understand what you’re interested in and match you with others!" />
+              <ProjectPanel
+                project={pastProjects[currentUser?.data.projectCount as number]}
+                isPreview={true}
+                previewClick={toggleProjectRating}
+              />
+              <ContentBox title="Project Rating Progress">
+                <div className="flex flex-col">
+                  <p>You&apos;ve rated</p>
+                  <p className="text-xxxl">
+                    {currentUser?.data.projectCount}/{pastProjects.length - 1}
+                  </p>
+                  <p>past projects so far,</p>
+                  <p className="mt-4">
+                    We reccomend rating atleast 20 past projects to get accurate
+                    teammate suggestions. However, the more you can do, the
+                    better!
+                  </p>
+                </div>
+              </ContentBox>
+            </>
+          ) : (
+            <>
+              <PageTitle title="You've rated all past projects! Below is a list of all the projects you've rated in case you want to look them over." />
+            </>
+          )}
+        </>
+      ) : null}
     </AppView>
   );
 };

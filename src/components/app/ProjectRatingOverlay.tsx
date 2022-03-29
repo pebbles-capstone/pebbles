@@ -1,24 +1,30 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "../../atoms/Button";
 import { ProjectPanel } from "./ProjectPanel";
 import { PastProject } from "../../types";
 import { useAuth } from "../../contexts/Auth";
 import api from "../../lib/api";
 import { User } from "../../types";
+import PastProjects from "../../pages/app/past-projects";
 
 interface ProjectRatingOverlayProps {
   projects: PastProject[];
   isShown: boolean;
   toggleIsShown: () => void;
+  projectsRatedSoFar: number;
 }
 
 export const ProjectRatingOverlay: React.FC<ProjectRatingOverlayProps> = (
   props
 ) => {
   const { user, updateCurrentUser } = useAuth();
-  const { projects, isShown, toggleIsShown } = props;
-  const [projectsRated, setProjectsRated] = useState(0);
-  const [currentProject, setCurrentProject] = useState(0);
+  const { projects, isShown, toggleIsShown, projectsRatedSoFar } = props;
+  const [projectsRated, setProjectsRated] = useState(
+    projectsRatedSoFar ? projectsRatedSoFar : 0
+  );
+  const [currentProject, setCurrentProject] = useState(
+    projectsRatedSoFar ? projectsRatedSoFar : 0
+  );
 
   const nextProject = () => {
     if (currentProject < projects.length - 1)
@@ -54,15 +60,18 @@ export const ProjectRatingOverlay: React.FC<ProjectRatingOverlayProps> = (
     e.stopPropagation();
     console.log("finish rating");
 
-    const userCopy = user;
-    userCopy!.data.projectCount = projectsRated;
-    updateCurrentUser(userCopy!);
+    if (user?.data.projectCount !== projectsRated) {
+      const userCopy = user;
+      userCopy!.data.projectCount = projectsRated;
+      updateCurrentUser(userCopy!);
 
-    const updateUserInterests = await api.postUser(
-      user?.id as string,
-      user as User
-    );
-    console.log(updateUserInterests);
+      const updateUserInterests = await api.postUser(
+        user?.id as string,
+        user as User
+      );
+      console.log(updateUserInterests);
+    }
+
     toggleIsShown();
   };
 
@@ -71,7 +80,7 @@ export const ProjectRatingOverlay: React.FC<ProjectRatingOverlayProps> = (
   return (
     <div
       className="w-screen h-screen bg-black bg-opacity-80 z-50 fixed top-0 left-0 flex flex-col justify-center items-center p-6"
-      onClick={toggleIsShown}
+      onClick={finishRating}
     >
       <ProjectPanel
         project={projects[currentProject]}

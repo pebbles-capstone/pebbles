@@ -83,7 +83,6 @@ export const AuthProvider: React.FC = ({ children }) => {
       const user = await Auth.currentAuthenticatedUser();
       if (user) {
         return user;
-        setCurrentUser(user);
       } else return defaultUserValue;
     } catch (err) {
       console.log(err);
@@ -96,9 +95,6 @@ export const AuthProvider: React.FC = ({ children }) => {
     name,
     data
   ) => {
-    // await Users.create({ email, password, handle, data });
-    // const user = await signInUser(email, password);
-    // return user;
     const user = await Auth.signUp({
       username: email,
       password: password,
@@ -107,12 +103,13 @@ export const AuthProvider: React.FC = ({ children }) => {
       },
     });
     if (user) {
-      // store user data in local storage
-      setUserData({
-        name: name,
+      const userData = {
         email: email,
+        name: name,
         data: data,
-      });
+      };
+      localStorage.setItem("userData", JSON.stringify(userData));
+      setUserData(userData);
       return true;
     } else {
       return false;
@@ -205,7 +202,23 @@ export const AuthProvider: React.FC = ({ children }) => {
               interestVector: [0, 0, 0, 0, 0, 0],
             },
           };
+        } else if (localStorage.getItem("userData") !== null) {
+          const localStorageUserData = JSON.parse(
+            localStorage.getItem("userData")!
+          );
+          postUserData = {
+            id: user.attributes.sub,
+            email: email,
+            name: localStorageUserData.name,
+            data: {
+              discipline: localStorageUserData.data.discipline,
+              areas: localStorageUserData.data.areas,
+              interests: localStorageUserData.data.interests,
+              interestVector: [0, 0, 0, 0, 0, 0],
+            },
+          };
         }
+
         const newBackendUser = await api.postUser(
           user.attributes.sub,
           postUserData
@@ -237,7 +250,6 @@ export const AuthProvider: React.FC = ({ children }) => {
       const user: any = await checkIfUserLoggedIn();
       console.log(user);
       if (user) {
-        console.log("wjat");
         const backenduser: any = await api.getUser(user.attributes.sub);
         if (backenduser) {
           setCurrentUser(userFromDto(JSON.parse(backenduser.data.body)));

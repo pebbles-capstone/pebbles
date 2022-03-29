@@ -1,28 +1,37 @@
 import { useFormik } from "formik";
 import { useState } from "react";
 import { Button } from "../../atoms/Button";
-import { Discipline, Area } from "../../types";
+import { Discipline, Area, User, UserData } from "../../types";
 import { TextInput } from "../../atoms/TextInput";
 import { RadioGroup } from "../../atoms/RadioGroup";
 import { CheckBoxGroup } from "../../atoms/CheckBoxGroup";
+import api from "../../lib/api";
+import { userFromDto } from "../../types/api";
 
-interface AccountEditProps {}
-
+interface AccountEditProps {
+  user: User;
+  updateUser: (user: User) => void;
+}
 interface InitialValuesProps {
   email: string;
   name: string;
-  discipline: Discipline | "";
+  discipline: Discipline;
   areas: Area[];
   interests: string[];
 }
 
-export const AccountEdit: React.FC<AccountEditProps> = (props) => {
+export const AccountEdit: React.FC<AccountEditProps> = ({
+  user,
+  updateUser,
+}) => {
   const initialValues: InitialValuesProps = {
-    email: "udit.desai3@gmail.com",
-    name: "Udit Desai",
-    discipline: "Computer",
-    areas: ["Analog and Digital Electronics", "Software"],
-    interests: ["i1", "i2", "i3"],
+    email: user?.email ? user.email : "",
+    name: user?.name ? user.name : "",
+    discipline: user?.data.discipline ? user.data.discipline : "Computer",
+    areas: user?.data.areas
+      ? user.data.areas
+      : ["Analog and Digital Electronics", "Software"],
+    interests: [],
   };
 
   const formik = useFormik({
@@ -35,28 +44,38 @@ export const AccountEdit: React.FC<AccountEditProps> = (props) => {
       if (!values.name) errors.name = "Name is required";
       if (!values.discipline) errors.discipline = "Discipline is required";
       if (values.areas.length === 0) errors.areas = "Areas are required";
-      if (values.interests.length === 0)
-        errors.interests = "Interests are required";
 
       if (values.areas.length < 2) errors.area = "More than 1 area is required";
 
       return errors;
     },
-    onSubmit: (values, { setErrors }) => {
-      const newErrors: { [key: string]: string } = {};
-      let isError = false;
+    onSubmit: async (values, { setErrors, setStatus }) => {
+      try {
+        console.log(values);
+        console.log(user);
+        const newUserData: User = {
+          id: user.id,
+          email: values.email,
+          name: values.name,
+          data: {
+            discipline: values.discipline,
+            areas: values.areas,
+            interests: values.interests,
+            interestVector: user.data.interestVector,
+            projectCount: user.data.projectCount,
+          },
+        };
 
-      if (values.discipline !== "Computer") {
-        isError = true;
-        newErrors.general = "There was an error in the server";
-      }
-
-      if (isError) {
-        setErrors(newErrors);
+        const result = await api.postUser(user.id, newUserData);
+        updateUser(userFromDto(result));
         return;
+      } catch (e) {
+        if (e) {
+          console.log(e);
+          setStatus(e as string);
+          return;
+        }
       }
-
-      console.log(values);
     },
   });
 
@@ -79,6 +98,8 @@ export const AccountEdit: React.FC<AccountEditProps> = (props) => {
     formik.resetForm();
     setIsEditing(false);
   };
+
+  if (!user) return null;
 
   return (
     <div className="w-full p-6 flex flex-col bg-white rounded-md shadow-md relative">
@@ -139,7 +160,7 @@ export const AccountEdit: React.FC<AccountEditProps> = (props) => {
             name="areas"
             className="mb-6"
           />
-          <CheckBoxGroup
+          {/* <CheckBoxGroup
             legend="Your interests?"
             currentValues={formik.values.interests}
             values={["i1", "i2", "i3", "i4", "i5", "i6"]}
@@ -153,7 +174,7 @@ export const AccountEdit: React.FC<AccountEditProps> = (props) => {
             ]}
             onChange={formik.handleChange}
             name="interests"
-          />
+          /> */}
           <div className="absolute top-0 right-0 p-6 flex">
             <Button
               isLink={false}
@@ -179,14 +200,14 @@ export const AccountEdit: React.FC<AccountEditProps> = (props) => {
       ) : (
         <div className="mt-3 flex flex-col">
           <h3 className="text-base font-medium mb-1">Email</h3>
-          <p className="mb-4">udit.desai3@gmail.com</p>
+          <p className="mb-4">{user?.email}</p>
           <h3 className="text-base font-medium mb-1">Full name</h3>
-          <p className="mb-6">Udit Desai</p>
+          <p className="mb-6">{user?.name}</p>
           <h3 className="text-base font-medium mb-1">Password</h3>
           <Button
-            isLink={false}
-            isInternal={false}
-            onClick={() => {}}
+            isLink={true}
+            isInternal={true}
+            link="/resetpassword"
             text="Reset password"
             ariaLabel="Reset password"
             size="md"
@@ -194,19 +215,25 @@ export const AccountEdit: React.FC<AccountEditProps> = (props) => {
             className="underline"
           />
           <h3 className="text-base font-medium mt-6 mb-1">Discipline</h3>
-          <p className="mb-4">Computer</p>
+          <p className="mb-4">{user?.data.discipline}</p>
           <h3 className="text-base font-medium mb-1">Focus Areas</h3>
           <div className="grid grid-cols-2 w-full md:w-1/2 mb-4">
-            <p>Hardware</p>
-            <p>Software</p>
+            {user?.data.areas.map((area) => (
+              <p key={area}>{area}</p>
+            ))}
           </div>
           <h3 className="text-base font-medium mb-1">Interests</h3>
           <div className="grid grid-cols-2 w-full md:w-1/2 gap-y-1">
-            <p>Interest 1</p>
-            <p>Interest 2</p>
-            <p>Interest 3</p>
-            <p>Interest 4</p>
-            <p>Interest 5</p>
+            {user.data?.interests.length > 0 &&
+            !(
+              user.data?.interests.length === 1 && user.data?.interests[0] == ""
+            ) ? (
+              user?.data.interests.map((interest) => (
+                <p key={interest}>{interest}</p>
+              ))
+            ) : (
+              <p>No interests</p>
+            )}
           </div>
           <div className="absolute top-0 right-0 p-6 flex">
             <Button

@@ -3,7 +3,7 @@ import { AppView } from "../../components/app/AppView";
 import { PageTitle } from "../../components/app/PageTitle";
 import { ContentBox } from "../../components/app/ContentBox";
 import { TablePanel } from "../../components/app/TablePanel";
-import { withAuth } from "../../contexts/Auth";
+import { withAuth, useAuth } from "../../contexts/Auth";
 import { AuthPage, Supervisor } from "../../types";
 
 const supervisors: Supervisor[] = [
@@ -44,13 +44,14 @@ const supervisors: Supervisor[] = [
   },
 ];
 
-const Supervisors: NextPage<AuthPage> = ({ user }) => {
+const Supervisors: NextPage<AuthPage> = () => {
+  const { user } = useAuth();
   const rows = supervisors.map((supervisor) => {
     return [supervisor.name, supervisor.email, supervisor.interests];
   });
 
   return (
-    <AppView name={user.name} width="wide">
+    <AppView name={user?.name!} width="wide">
       <PageTitle title="Based on your project likings and everyone elses’, we suggest contacting the following supervisors!" />
       <ContentBox
         title="How we sort"

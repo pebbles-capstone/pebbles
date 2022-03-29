@@ -4,7 +4,7 @@ import { ContentBox } from "../../components/app/ContentBox";
 import { PageTitle } from "../../components/app/PageTitle";
 import { TablePanel } from "../../components/app/TablePanel";
 import { PastProject, CurrentProject } from "../../types";
-import { withAuth } from "../../contexts/Auth";
+import { withAuth, useAuth } from "../../contexts/Auth";
 import { AuthPage } from "../../types";
 
 const currentProjects: CurrentProject[] = [
@@ -47,13 +47,14 @@ const currentProjects: CurrentProject[] = [
   },
 ];
 
-const CurrentProjects: NextPage<AuthPage> = ({ user }) => {
+const CurrentProjects: NextPage<AuthPage> = () => {
+  const { user } = useAuth();
   const rows = currentProjects.map((project) => {
     return [project.title, project.supervisor, project.description];
   });
 
   return (
-    <AppView name={user.name} width="wide">
+    <AppView name={user?.name!} width="wide">
       <PageTitle title="View all the current posted projects by supervisors already sorted based on what we think you'll like!" />
       <ContentBox
         title="How we sort"
