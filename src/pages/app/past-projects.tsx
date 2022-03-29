@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import { AppView } from "../../components/app/AppView";
 import { ContentBox } from "../../components/app/ContentBox";
@@ -8,6 +8,7 @@ import { PastProject } from "../../types";
 import { withAuth } from "../../contexts/Auth";
 import { AuthPage } from "../../types";
 import { ProjectRatingOverlay } from "../../components/app/ProjectRatingOverlay";
+import api from "../../lib/api";
 
 const mockProject: PastProject = {
   title: "Project Name",
@@ -31,6 +32,15 @@ const PastProjects: NextPage<AuthPage> = ({ user }) => {
   const toggleProjectRating = () => {
     setProjectRatingVisible((prev) => !prev);
   };
+
+  useEffect(() => {
+    const getPastProjects = async () => {
+      const pastProjects = await api.getProjects();
+      console.log(pastProjects);
+    };
+
+    getPastProjects();
+  }, []);
 
   return (
     <AppView name={user.name} width="standard">

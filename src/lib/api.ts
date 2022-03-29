@@ -1,9 +1,10 @@
-import axios from 'axios';
+import axios from "axios";
 import { Auth } from "aws-amplify";
-import { User } from '../types';
-import { dtoFromUser, UserDTO } from '../types/api';
+import { User } from "../types";
+import { dtoFromUser, UserDTO } from "../types/api";
 
-const BASE_AWS_URL = "https://762h15kldb.execute-api.ca-central-1.amazonaws.com/dev";
+const BASE_AWS_URL =
+  "https://762h15kldb.execute-api.ca-central-1.amazonaws.com/dev";
 
 // Singleton API - TODO: replace with better design after demo
 class Service {
@@ -13,11 +14,11 @@ class Service {
   private constructor() {}
 
   private async getJWT() {
-    try{
+    try {
       const user = await Auth.currentAuthenticatedUser();
       const { jwtToken } = user?.signInUserSession?.idToken;
       return jwtToken;
-    } catch(e){
+    } catch (e) {
       // replace with retry logic + proper err handling
       return undefined;
     }
@@ -25,11 +26,11 @@ class Service {
 
   public static getInstance(): Service {
     if (!Service.instance) {
-        Service.instance = new Service();
+      Service.instance = new Service();
     }
 
     return Service.instance;
-}
+  }
 
   public async getProjects() {
     try {
@@ -42,8 +43,8 @@ class Service {
       axios.defaults.headers.common["Authorization"] = "Bearer " + jwtToken;
       const res = await axios.get(projectsURl, data);
       const res_data = JSON.parse(res?.data?.body);
-      
-      if(res?.status != 200) throw Error("Response failed");
+
+      if (res?.status != 200) throw Error("Response failed");
 
       return res_data;
     } catch (e) {
@@ -65,8 +66,8 @@ class Service {
       const res = await axios.get(projectsURl, data);
       console.log(res);
       const res_data = JSON.parse(res?.data?.body);
-      
-      if(res?.status != 200) throw Error("Response failed");
+
+      if (res?.status != 200) throw Error("Response failed");
 
       return res_data?.recs;
     } catch (e) {
@@ -87,11 +88,9 @@ class Service {
       axios.defaults.headers.common["Authorization"] = "Bearer " + jwtToken;
       const res = await axios.get(projectsURl, data);
       console.log(res);
-      const res_data = JSON.parse(res?.data?.body);
-      
-      if(res?.status != 200) throw Error("Response failed");
+      if (res?.status != 200) throw Error("Response failed");
 
-      return res_data;
+      return res;
     } catch (e) {
       //TODO replace with proper Error class
       console.log(e);
@@ -99,7 +98,7 @@ class Service {
     }
   }
 
-  public async postUser(userID: Number, user: User) {
+  public async postUser(userID: string, user: User) {
     try {
       const jwtToken = await this.getJWT();
       const userData: UserDTO = dtoFromUser(user);
@@ -107,9 +106,9 @@ class Service {
         headers: { Authorization: "Bearer " + jwtToken },
         body: {
           user: {
-            ...userData
-          }
-        }
+            ...userData,
+          },
+        },
       };
       const projectsURl = this.baseURL + `/user/${userID}`;
 
@@ -117,10 +116,11 @@ class Service {
       const res = await axios.post(projectsURl, data);
       console.log(res);
       const res_data = JSON.parse(res?.data?.body);
-      
-      if(res?.status != 200) throw Error("Response failed");
 
-      return res_data?.recs;
+      if (res?.status != 200) throw Error("Response failed");
+
+      console.log(res_data);
+      return res_data?.Item;
     } catch (e) {
       //TODO replace with proper Error class
       console.log(e);

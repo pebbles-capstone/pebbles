@@ -33,9 +33,9 @@ export type Area =
   | "Software";
 
 export interface UserData {
-  discipline: Discipline,
-  areas: Area[],
-  interests: string[]
+  discipline: Discipline;
+  areas: Area[];
+  interests: number[];
 }
 
 export interface User {
