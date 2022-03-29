@@ -20,8 +20,8 @@ export const ProjectPanel: React.FC<ProjectPanelProps> = (props) => {
 
   return (
     <div
-      className={`w-full max-w-3xl p-6 flex flex-col bg-grey-dark rounded-md shadow-md relative ${
-        isPreview && "pointer-events-none"
+      className={`w-full max-w-4xl p-6 flex flex-col bg-grey-dark rounded-md shadow-md relative ${
+        isPreview && "pointer-events-none max-w-3xl"
       }`}
       onClick={preventDefault}
     >
@@ -40,15 +40,27 @@ export const ProjectPanel: React.FC<ProjectPanelProps> = (props) => {
         </div>
       )}
       <div className="w-full p-6 flex flex-col bg-white rounded-md">
-        <h2 className="text-xxl mb-3 max-w-3xl">{title}</h2>
-        <p className="text-md mb-3 text-black max-w-3xl">
+        <h2
+          className={`${
+            title.length > 80 ? "text-md md:text-lg" : "text-lg md:text-xl"
+          } mb-3 max-w-4xl`}
+        >
+          {title}
+        </h2>
+        <p className="text-base mb-3 text-black max-w-4xl">
           <span className="text-grey-darker">Supervisor:</span> {supervisor}
         </p>
-        <p className="text-md max-w-3xl">
+        <p className="text-base max-w-4xl">
           <span className="text-grey-darker"># of students:</span>{" "}
           {numOfStudents}
         </p>
-        <p className="text-md mt-8 max-w-3xl">{description}</p>
+        <p
+          className={`${
+            description && description.length > 1000 ? "text-sm" : "text-base"
+          } mt-6 max-w-4xl`}
+        >
+          {description.substring(0, 1500)}
+        </p>
       </div>
       <div className="flex items-center justify-between mt-6">
         <Button

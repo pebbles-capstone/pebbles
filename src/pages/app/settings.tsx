@@ -1,12 +1,14 @@
 import type { NextPage } from "next";
 import { AppView } from "../../components/app/AppView";
 import { PageTitle } from "../../components/app/PageTitle";
-import { withAuth } from "../../contexts/Auth";
+import { withAuth, useAuth } from "../../contexts/Auth";
 import { AuthPage } from "../../types";
 
-const AppAccount: NextPage<AuthPage> = ({ user }) => {
+const AppAccount: NextPage<AuthPage> = () => {
+  const { user } = useAuth();
+
   return (
-    <AppView name={user.name} width="standard">
+    <AppView name={user?.name!} width="standard">
       <PageTitle title="Settings" />
     </AppView>
   );

@@ -3,7 +3,7 @@ import { AppView } from "../../components/app/AppView";
 import { ContentBox } from "../../components/app/ContentBox";
 import { TablePanel } from "../../components/app/TablePanel";
 import { PageTitle } from "../../components/app/PageTitle";
-import { withAuth } from "../../contexts/Auth";
+import { withAuth, useAuth } from "../../contexts/Auth";
 import { AuthPage, OtherUser } from "../../types";
 
 const potentialTeammates: OtherUser[] = [
@@ -41,13 +41,15 @@ const potentialTeammates: OtherUser[] = [
   },
 ];
 
-const PotentialTeammates: NextPage<AuthPage> = ({ user }) => {
+const PotentialTeammates: NextPage<AuthPage> = () => {
+  const { user } = useAuth();
+
   const rows = potentialTeammates.map((person) => {
     return [person.name, person.email];
   });
 
   return (
-    <AppView name={user.name} width="wide">
+    <AppView name={user?.name!} width="wide">
       <PageTitle title="Based on your project likings and everyone elses’, we suggest teaming with any of the following students!" />
       <ContentBox
         title="How we sort"
