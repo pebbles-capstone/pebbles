@@ -38,6 +38,7 @@ export interface UserData {
   areas: Area[];
   interests: string[];
   interestVector?: number[];
+  projectCount?: number;
 }
 
 export interface User {

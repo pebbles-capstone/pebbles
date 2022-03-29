@@ -5,6 +5,7 @@ import { GetServerSidePropsContext } from "next";
 import { UserData, User } from "../types";
 import { CognitoUser } from "amazon-cognito-identity-js";
 import api from "../lib/api";
+import { userFromDto } from "../types/api";
 Amplify.configure({ ...awsExports, ssr: true });
 
 // Assign types to anything added to the context provider value prop.
@@ -31,7 +32,8 @@ type AuthContext = {
   signInUser: (email: string, password: string) => Promise<CognitoUser | null>;
   signOutUser: () => Promise<boolean>;
   loadingUser: boolean;
-  user: CognitoUser | null;
+  user: User | null;
+  updateCurrentUser: (user: User) => void;
 };
 
 const AuthContext = createContext<AuthContext | null>(null);
@@ -68,11 +70,13 @@ export const withAuth = async (
 };
 
 export const AuthProvider: React.FC = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState<CognitoUser | null>(
-    defaultUserValue
-  );
+  const [currentUser, setCurrentUser] = useState<User | null>(defaultUserValue);
   const [userData, setUserData] = useState<any>(null);
   const [loadingUser, setLoadingUser] = useState<boolean>(true);
+
+  const updateCurrentUser = (user: User | null) => {
+    setCurrentUser(user);
+  };
 
   const checkIfUserLoggedIn: AuthContext["checkIfUserLoggedIn"] = async () => {
     try {
@@ -168,32 +172,47 @@ export const AuthProvider: React.FC = ({ children }) => {
 
       if (backendUser.data.statusCode === 200) {
         console.log("signed in with api.getuser");
-        setCurrentUser(backendUser);
+        const parsedBackendUser = userFromDto(
+          JSON.parse(backendUser.data.body)
+        );
+        setCurrentUser(parsedBackendUser);
         setLoadingUser(false);
-        return backendUser;
+        return parsedBackendUser;
       } else {
         console.log(
           "api.getuser did not return anything proper, so gonna try post"
         );
-        const postUserData: User = {
+        let postUserData: User = {
           id: user.attributes.sub,
-          email: userData.email,
-          name: userData.name,
+          email: email,
+          name: "",
           data: {
-            discipline: userData.data.discipline,
-            areas: userData.data.areas,
-            interests: userData.data.interests,
+            discipline: "Computer",
+            areas: [],
+            interests: [],
             interestVector: [0, 0, 0, 0, 0, 0],
           },
         };
+        if (userData) {
+          postUserData = {
+            id: user.attributes.sub,
+            email: userData.email,
+            name: userData.name,
+            data: {
+              discipline: userData.data.discipline,
+              areas: userData.data.areas,
+              interests: userData.data.interests,
+              interestVector: [0, 0, 0, 0, 0, 0],
+            },
+          };
+        }
         const newBackendUser = await api.postUser(
           user.attributes.sub,
           postUserData
         );
 
         console.log("did api.postuser and got this back", newBackendUser);
-
-        setCurrentUser(newBackendUser);
+        setCurrentUser(userFromDto(newBackendUser));
         setLoadingUser(false);
         return newBackendUser;
       }
@@ -215,9 +234,16 @@ export const AuthProvider: React.FC = ({ children }) => {
   // Attempt to load user at runtime.
   useEffect(() => {
     const loadUser = async () => {
-      const user = await checkIfUserLoggedIn();
-      setLoadingUser(false);
-      if (user) setCurrentUser(user);
+      const user: any = await checkIfUserLoggedIn();
+      console.log(user);
+      if (user) {
+        console.log("wjat");
+        const backenduser: any = await api.getUser(user.attributes.sub);
+        if (backenduser) {
+          setCurrentUser(userFromDto(JSON.parse(backenduser.data.body)));
+          setLoadingUser(false);
+        }
+      }
     };
 
     loadUser();
@@ -227,6 +253,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     <AuthContext.Provider
       value={{
         user: currentUser,
+        updateCurrentUser,
         loadingUser,
         checkIfUserLoggedIn,
         signInUser,

@@ -2,6 +2,9 @@ import { useState } from "react";
 import { Button } from "../../atoms/Button";
 import { ProjectPanel } from "./ProjectPanel";
 import { PastProject } from "../../types";
+import { useAuth } from "../../contexts/Auth";
+import api from "../../lib/api";
+import { User } from "../../types";
 
 interface ProjectRatingOverlayProps {
   projects: PastProject[];
@@ -12,28 +15,54 @@ interface ProjectRatingOverlayProps {
 export const ProjectRatingOverlay: React.FC<ProjectRatingOverlayProps> = (
   props
 ) => {
+  const { user, updateCurrentUser } = useAuth();
   const { projects, isShown, toggleIsShown } = props;
-
+  const [projectsRated, setProjectsRated] = useState(0);
   const [currentProject, setCurrentProject] = useState(0);
 
   const nextProject = () => {
     if (currentProject < projects.length - 1)
-      setCurrentProject((prev) => prev + 1);
+      setProjectsRated((prev) => prev + 1);
+    setCurrentProject((prev) => prev + 1);
   };
 
   const likeProject = () => {
-    console.log("liked this project");
-    nextProject();
+    if (!!user?.data.interestVector && !!projects[currentProject].interests) {
+      let userCopy = user;
+      userCopy.data.interestVector = (
+        userCopy?.data.interestVector as number[]
+      ).map((interest, i) => {
+        if ((projects[currentProject].interests as number[])[i] === 1) {
+          return interest + 1;
+        } else {
+          return interest;
+        }
+      }) as number[];
+
+      console.log(userCopy);
+      updateCurrentUser(userCopy);
+
+      nextProject();
+    }
   };
 
   const dislikeProject = () => {
-    console.log("disliked this project");
     nextProject();
   };
 
-  const finishRating = (e: any) => {
+  const finishRating = async (e: any) => {
     e.stopPropagation();
     console.log("finish rating");
+
+    const userCopy = user;
+    userCopy!.data.projectCount = projectsRated;
+    updateCurrentUser(userCopy!);
+
+    const updateUserInterests = await api.postUser(
+      user?.id as string,
+      user as User
+    );
+    console.log(updateUserInterests);
     toggleIsShown();
   };
 
