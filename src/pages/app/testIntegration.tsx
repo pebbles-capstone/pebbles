@@ -43,7 +43,7 @@ const TestIntegration: NextPage<AuthPage> = ({ user }) => {
   };
 
   const getUser = async () => {
-    const res = await api.getUser(299299);
+    const res = await api.getUser("299299");
     console.log([res]);
     const array_res = [res];
     setData2(array_res as never[]);
