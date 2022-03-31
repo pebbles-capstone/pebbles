@@ -1,10 +1,12 @@
 import type { NextPage } from "next";
+import React, { useState, useEffect } from "react";
 import { AppView } from "../../components/app/AppView";
 import { PageTitle } from "../../components/app/PageTitle";
 import { ContentBox } from "../../components/app/ContentBox";
 import { TablePanel } from "../../components/app/TablePanel";
 import { withAuth, useAuth } from "../../contexts/Auth";
 import { AuthPage, Supervisor } from "../../types";
+import api from "../../lib/api";
 
 const supervisors: Supervisor[] = [
   {
@@ -46,9 +48,32 @@ const supervisors: Supervisor[] = [
 
 const Supervisors: NextPage<AuthPage> = () => {
   const { user } = useAuth();
-  const rows = supervisors.map((supervisor) => {
-    return [supervisor.name, supervisor.email, supervisor.interests];
-  });
+  const [loadingSupervisors, setLoadingSupervisors] = useState(true);
+  const [potentialSupervisors, setPotentialSupervisors] = useState<
+    Supervisor[]
+  >([]);
+  const [supervisorRows, setSupervisorRows] = useState<string[][]>([]);
+
+  useEffect(() => {
+    const getSupervisors = async () => {
+      if (user) {
+        const recs: any = await api.getRecs(user?.id);
+        setPotentialSupervisors(recs.profRec);
+      }
+    };
+
+    if (user) getSupervisors();
+  }, [user]);
+
+  useEffect(() => {
+    if (potentialSupervisors.length > 0) {
+      const rows = supervisors.map((supervisor) => {
+        return [supervisor.name, supervisor.email, supervisor.interests];
+      });
+      setSupervisorRows(rows);
+      setLoadingSupervisors(false);
+    }
+  }, [potentialSupervisors]);
 
   return (
     <AppView name={user?.name!} width="wide">
@@ -57,12 +82,14 @@ const Supervisors: NextPage<AuthPage> = () => {
         title="How we sort"
         description="Supervisors are sorted based on the information you entered when signing up and the past projects you've rated"
       />
-      <TablePanel
-        title="Potential Supervisors"
-        columns={["Name", "Email", "Interests"]}
-        rows={rows}
-        customGridStyle="SupervisorsTable"
-      />
+      {!loadingSupervisors && (
+        <TablePanel
+          title="Potential Supervisors"
+          columns={["Name", "Email", "Interests"]}
+          rows={supervisorRows}
+          customGridStyle="SupervisorsTable"
+        />
+      )}
     </AppView>
   );
 };

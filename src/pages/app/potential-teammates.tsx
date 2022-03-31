@@ -1,10 +1,12 @@
 import type { NextPage } from "next";
+import React, { useState, useEffect } from "react";
 import { AppView } from "../../components/app/AppView";
 import { ContentBox } from "../../components/app/ContentBox";
 import { TablePanel } from "../../components/app/TablePanel";
 import { PageTitle } from "../../components/app/PageTitle";
 import { withAuth, useAuth } from "../../contexts/Auth";
 import { AuthPage, OtherUser } from "../../types";
+import api from "../../lib/api";
 
 const potentialTeammates: OtherUser[] = [
   {
@@ -43,10 +45,30 @@ const potentialTeammates: OtherUser[] = [
 
 const PotentialTeammates: NextPage<AuthPage> = () => {
   const { user } = useAuth();
+  const [loadingTeammates, setLoadingTeammates] = useState(true);
+  const [potentialTeammates, setPotentialTeammates] = useState<OtherUser[]>([]);
+  const [teammateRows, setTeammateRows] = useState<string[][]>([]);
 
-  const rows = potentialTeammates.map((person) => {
-    return [person.name, person.email];
-  });
+  useEffect(() => {
+    const getTeammates = async () => {
+      if (user) {
+        const recs: any = await api.getRecs(user?.id);
+        setPotentialTeammates(recs.userRec);
+      }
+    };
+
+    if (user) getTeammates();
+  }, [user]);
+
+  useEffect(() => {
+    if (potentialTeammates.length > 0) {
+      const rows = potentialTeammates.map((person) => {
+        return [person.name, person.email];
+      });
+      setTeammateRows(rows);
+      setLoadingTeammates(false);
+    }
+  }, [potentialTeammates]);
 
   return (
     <AppView name={user?.name!} width="wide">
@@ -55,12 +77,14 @@ const PotentialTeammates: NextPage<AuthPage> = () => {
         title="How we sort"
         description="Teammates are sorted based on the information users entered when signing up and past projects everyone has rated"
       />
-      <TablePanel
-        title="Potential Teammates"
-        columns={["Name", "Email"]}
-        rows={rows}
-        customGridStyle="PotentialTeammatesTable"
-      />
+      {!loadingTeammates && (
+        <TablePanel
+          title="Potential Teammates"
+          columns={["Name", "Email"]}
+          rows={teammateRows}
+          customGridStyle="PotentialTeammatesTable"
+        />
+      )}
     </AppView>
   );
 };

@@ -1,7 +1,13 @@
 import axios from "axios";
 import { Auth } from "aws-amplify";
 import { PastProject, User } from "../types";
-import { dtoFromUser, oldProjFromDto, ProjectDTO, recsFromDto, UserDTO } from "../types/api";
+import {
+  dtoFromUser,
+  oldProjFromDto,
+  ProjectDTO,
+  recsFromDto,
+  UserDTO,
+} from "../types/api";
 
 const BASE_AWS_URL =
   "https://762h15kldb.execute-api.ca-central-1.amazonaws.com/dev";
@@ -56,7 +62,7 @@ class Service {
     }
   }
 
-  public async getRecs(userID: Number) {
+  public async getRecs(userID: string) {
     try {
       const jwtToken = await this.getJWT();
       const data = {
