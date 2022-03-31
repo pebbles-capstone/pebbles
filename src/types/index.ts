@@ -51,3 +51,9 @@ export interface User {
 export interface AuthPage {
   user: User;
 }
+
+export interface RecData {
+  profRec: Supervisor[],
+  userRec: User[],
+  projectRec: PastProject[],
+}

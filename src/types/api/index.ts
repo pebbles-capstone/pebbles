@@ -1,4 +1,4 @@
-import { User, Area, Discipline, PastProject } from "../index";
+import { User, Area, Discipline, PastProject, RecData, Supervisor } from "../index";
 export interface UserDTO {
   userId: string;
   about: string;
@@ -24,6 +24,36 @@ export interface ProjectDTO {
   TagB: string;
   TagA: string;
 }
+
+export interface ProfDTO {
+  Name: string,
+  id: string,
+  Email: string,
+  Interests: string,
+  Admin: string,
+  TagA?: string,
+  TagB?: string,
+  TagBVector?: string[]
+}
+
+export interface RecDTO {
+  profRec: any[],
+  userRec: UserDTO[],
+  projectRec: ProjectDTO[],
+}
+
+
+export const supervisorFromDto = (prof: ProfDTO): Supervisor => ({
+  name: prof?.Name,
+  email: prof?.Email,
+  interests: prof?.Interests,
+})
+
+export const recsFromDto = (rec: RecDTO): RecData => ({
+  profRec: rec?.profRec.map(supervisorFromDto),
+  userRec: rec?.userRec.map(userFromDto),
+  projectRec: rec?.projectRec.map(oldProjFromDto),
+})
 
 export const oldProjFromDto = (proj: ProjectDTO): PastProject => ({
   title: proj["Project Title"],

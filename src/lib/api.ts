@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Auth } from "aws-amplify";
 import { PastProject, User } from "../types";
-import { dtoFromUser, oldProjFromDto, ProjectDTO, UserDTO } from "../types/api";
+import { dtoFromUser, oldProjFromDto, ProjectDTO, recsFromDto, UserDTO } from "../types/api";
 
 const BASE_AWS_URL =
   "https://762h15kldb.execute-api.ca-central-1.amazonaws.com/dev";
@@ -71,7 +71,9 @@ class Service {
 
       if (res?.status != 200) throw Error("Response failed");
 
-      return res_data?.recs;
+      const recs = recsFromDto(res_data?.recs);
+      console.log(recs);
+      return recs;
     } catch (e) {
       //TODO replace with proper Error class
       console.log(e);
@@ -79,7 +81,7 @@ class Service {
     }
   }
 
-  public async getUser(userID: Number) {
+  public async getUser(userID: string) {
     try {
       const jwtToken = await this.getJWT();
       const data = {
