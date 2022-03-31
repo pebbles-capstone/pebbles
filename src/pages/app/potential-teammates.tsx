@@ -8,41 +8,6 @@ import { withAuth, useAuth } from "../../contexts/Auth";
 import { AuthPage, OtherUser } from "../../types";
 import api from "../../lib/api";
 
-const potentialTeammates: OtherUser[] = [
-  {
-    name: "Udit Desai",
-    email: "udit@mail.utoronto.ca",
-  },
-  {
-    name: "Nish Patel",
-    email: "nish@mail.utoronto.ca",
-  },
-  {
-    name: "Krishna Solanki",
-    email: "krishna@mail.utoronto.ca",
-  },
-  {
-    name: "Sam Weninger",
-    email: "sam@mail.utoronto.ca",
-  },
-  {
-    name: "Charlotte Moryto",
-    email: "charlotte@mail.utoronto.ca",
-  },
-  {
-    name: "Wasif Zulkernine",
-    email: "wasif@mail.utoronto.ca",
-  },
-  {
-    name: "Gurmehar Sandhu",
-    email: "gurm@mail.utoronto.ca",
-  },
-  {
-    name: "Rhea Dhar",
-    email: "rhea@mail.utoronto.ca",
-  },
-];
-
 const PotentialTeammates: NextPage<AuthPage> = () => {
   const { user } = useAuth();
   const [loadingTeammates, setLoadingTeammates] = useState(true);
