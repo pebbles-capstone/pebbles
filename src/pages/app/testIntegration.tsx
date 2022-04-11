@@ -20,7 +20,7 @@ const TestIntegration: NextPage<AuthPage> = ({ user }) => {
   };
 
   const getRecs = async () => {
-    const recs = await api.getRecs(99);
+    const recs = await api.getRecs("99");
     // console.log(recs.profRec);
     setData1([recs] as never[]);
     return recs;

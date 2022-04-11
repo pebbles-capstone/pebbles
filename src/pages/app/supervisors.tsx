@@ -51,13 +51,14 @@ const Supervisors: NextPage<AuthPage> = () => {
   const [loadingSupervisors, setLoadingSupervisors] = useState(true);
   const [potentialSupervisors, setPotentialSupervisors] = useState<
     Supervisor[]
-  >([]);
+  >(supervisors);
   const [supervisorRows, setSupervisorRows] = useState<string[][]>([]);
 
   useEffect(() => {
     const getSupervisors = async () => {
       if (user) {
         const recs: any = await api.getRecs(user?.id);
+        console.log("recs: ", recs);
         setPotentialSupervisors(recs.profRec);
       }
     };
@@ -67,7 +68,7 @@ const Supervisors: NextPage<AuthPage> = () => {
 
   useEffect(() => {
     if (potentialSupervisors.length > 0) {
-      const rows = supervisors.map((supervisor) => {
+      const rows = potentialSupervisors.map((supervisor) => {
         return [supervisor.name, supervisor.email, supervisor.interests];
       });
       setSupervisorRows(rows);
