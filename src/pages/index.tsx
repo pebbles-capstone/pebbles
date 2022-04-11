@@ -1,6 +1,11 @@
 import type { NextPage } from "next";
 import { Button } from "../atoms/Button";
 import { Icon } from "../atoms/Icon";
+import Image from "next/image";
+import Pebble1 from "../../public/images/pebbles1.jpg";
+import Pebble2 from "../../public/images/pebbles2.jpg";
+import Pebble3 from "../../public/images/pebbles3.jpg";
+import Pebble4 from "../../public/images/pebbles4.jpg";
 
 const Home: NextPage = () => {
   return (
@@ -67,9 +72,15 @@ const Home: NextPage = () => {
             to try it out!
           </p>
           <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-6">
-            <div className="w-full h-48 md:h-96 rounded-md bg-grey"></div>
-            <div className="w-full h-48 md:h-96 rounded-md bg-grey"></div>
-            <div className="w-full h-48 md:h-96 rounded-md bg-grey"></div>
+            <div className="w-full rounded-md bg-red p-2 pb-1">
+              <Image src={Pebble1} alt="Pebble 1" />
+            </div>
+            <div className="w-full rounded-md bg-red p-2 pb-1">
+              <Image src={Pebble2} alt="Pebble 2" />
+            </div>
+            <div className="w-full rounded-md bg-red p-2 pb-1">
+              <Image src={Pebble3} alt="Pebble 3" />
+            </div>
           </div>
         </section>
         <section className="flex flex-col w-full mt-20">
@@ -83,8 +94,12 @@ const Home: NextPage = () => {
             to try it out!
           </p>
           <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6">
-            <div className="w-full h-48 md:h-96 rounded-md bg-grey"></div>
-            <div className="w-full h-48 md:h-96 rounded-md bg-grey"></div>
+            <div className="w-full rounded-md bg-blue p-2 pb-1">
+              <Image src={Pebble2} alt="Pebble 2" />
+            </div>
+            <div className="w-full rounded-md bg-blue p-2 pb-1">
+              <Image src={Pebble4} alt="Pebble 4" />
+            </div>
           </div>
         </section>
         <div className="mt-12 my-24 w-full rounded-3xl bg-red-light px-6 md:px-12 py-6 flex flex-col md:flex-row md:items-center justify-between">
